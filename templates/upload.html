@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Pawan Simha">
+    <title>Upload Image - ReuniteAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
+    <style>
+        body,
+        input,
+        button,
+        select,
+        textarea {
+            font-family: 'Instrument Sans', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 20px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'navigation.html' %}
+
+    <div class="hero-section hero-simple">
+        <div class="hero-content">
+            <h1>Image Verification</h1>
+            <p>Upload an image to verify if a person is in our missing persons database.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="form-card">
+            <form action="/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="form-group">
+                    <label for="image"><i class="material-icons">image</i> Select Image</label>
+                    <input type="file" id="image" name="image" accept="image/*" required>
+                    <small>Supported formats: JPG, PNG, JPEG</small>
+                </div>
+
+                <div id="preview-container" style="display: none; margin: 20px 0;">
+                    <img id="image-preview" src="" alt="Preview" style="max-width: 300px; border-radius: 8px;">
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submit-btn">
+                    <i class="material-icons">search</i> <span id="submit-text">Upload & Verify</span>
+                    <span id="loading-spinner" style="display: none;">Processing...</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,285 @@
+<meta name="author" content="Pawan Simha">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+    rel="stylesheet">
+<style>
+    .brand-main {
+        font-family: "Instrument Sans", sans-serif;
+    }
+
+    .nav-brand a:hover,
+    .nav-logo:hover {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .mobile-menu-toggle {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .mobile-menu-toggle {
+            display: block;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger-line {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 5px 0;
+            transition: 0.4s;
+
+        }
+
+        .nav-links {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-links.active {
+            display: flex;
+        }
+    }
+</style>
+<nav class="navbar" aria-label="Main Navigation">
+    <div class="nav-container">
+        <!-- Logo and Brand -->
+        <div class="nav-brand">
+            <a href="/templates/login.html" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;"
+                class="nav-brand-link">
+                <img src="/static/images/logo.png" alt="ReuniteAI Logo" class="nav-logo">
+                <h2 class="nav-title">
+                    {% if session.get('role') == 'admin' %}
+                    <!-- <span class="brand-main">ReuniteAI</span> -->
+                    <span class="admin-badge">Admin</span>
+                    {% else %}
+                    <!-- <span class="brand-main" style="margin-left: 6px; font-size: 1.3em;"> ReuniteAI</span> -->
+                    {% endif %}
+                </h2>
+            </a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            {% if session.get('role') == 'admin' %}
+            <a href="/user/home" class="nav-link">
+                <i class="material-icons" aria-hidden="true">home</i>
+                <span>Home</span>
+            </a>
+            <a href="/admin/dashboard" class="nav-link">
+                <i class="material-icons" aria-hidden="true">dashboard</i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/404" class="nav-link">
+                <i class="material-icons" aria-hidden="true">folder_open</i>
+                <span>Cases</span>
+            </a>
+            <a href="/404" class="nav-link">
+                <i class="material-icons" aria-hidden="true">show_chart</i>
+                <span>Analytics</span>
+            </a>
+            {% else %}
+            {% if request.endpoint == 'user_home' %}
+            <a href="#global-stats" class="nav-link">
+                <i class="material-icons" aria-hidden="true">public</i>
+                <span>Statistics</span>
+            </a>
+            <a href="#how-it-works" class="nav-link">
+                <i class="material-icons" aria-hidden="true">settings</i>
+                <span>How It Works</span>
+            </a>
+            <a href="#impact" class="nav-link">
+                <i class="material-icons" aria-hidden="true">favorite</i>
+                <span>Impact</span>
+            </a>
+            <a href="#academic-purpose" class="nav-link">
+                <i class="material-icons" aria-hidden="true">shield</i>
+                <span>Security</span>
+            </a>
+            <a href="#faq" class="nav-link">
+                <i class="material-icons" aria-hidden="true">help</i>
+                <span>FAQ</span>
+            </a>
+            <a href="/contact" class="nav-link">
+                <i class="material-icons" aria-hidden="true">email</i>
+                <span>Contact</span>
+            </a>
+            {% else %}
+            <a href="/user/home" class="nav-link">
+                <i class="material-icons" aria-hidden="true">home</i>
+                <span>Home</span>
+            </a>
+            <a href="/profile" class="nav-link">
+                <i class="material-icons" aria-hidden="true">person</i>
+                <span>Profile</span>
+            </a>
+            <a href="/upload" class="nav-link">
+                <i class="material-icons" aria-hidden="true">search</i>
+                <span>Verify</span>
+            </a>
+            <a href="/register_missing" class="nav-link">
+                <i class="material-icons" aria-hidden="true">person_add</i>
+                <span>Report</span>
+            </a>
+            <a href="/contact" class="nav-link">
+                <i class="material-icons" aria-hidden="true">email</i>
+                <span>Contact</span>
+            </a>
+            {% endif %}
+            {% endif %}
+
+            <!-- User Profile Dropdown -->
+            <div class="user-dropdown">
+                <button class="user-profile-btn" aria-haspopup="true" aria-expanded="false">
+                    <div class="user-avatar">
+                        <img src="{{ url_for('static', filename='images/profiledp.png') }}" alt="Profile Picture"
+                            class="user-avatar-img">
+                    </div>
+                    <span class="user-email">{{ session.get('user_email', 'User') }}</span>
+                    <i class="material-icons dropdown-icon" aria-hidden="true">expand_more</i>
+                </button>
+
+                <div class="dropdown-menu" role="menu">
+                    <div class="dropdown-header">
+                        <div class="dropdown-user-info">
+                            <p class="dropdown-email">{{ session.get('user_email') }}</p>
+                            <p class="dropdown-role">
+                                {% if session.get('role') == 'admin' %}
+                                <i class="material-icons" aria-hidden="true">shield</i> Administrator
+                                {% else %}
+                                <i class="material-icons" aria-hidden="true">person</i> User Account
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="/profile" class="dropdown-item" role="menuitem">
+                        <i class="material-icons" aria-hidden="true">account_circle</i>
+                        <span>My Profile</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/logout" class="dropdown-item logout-item" role="menuitem">
+                        <i class="material-icons" aria-hidden="true">logout</i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- JavaScript for Navigation Interactions -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Mobile Menu Toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', function () {
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !isExpanded);
+                navLinks.classList.toggle('active');
+                this.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+        }
+
+        // User Dropdown Toggle
+        const userProfileBtn = document.querySelector('.user-profile-btn');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        if (userProfileBtn && dropdownMenu) {
+            userProfileBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !isExpanded);
+                dropdownMenu.classList.toggle('active');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (e) {
+                if (!userProfileBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    userProfileBtn.setAttribute('aria-expanded', 'false');
+                    dropdownMenu.classList.remove('active');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && dropdownMenu.classList.contains('active')) {
+                    userProfileBtn.setAttribute('aria-expanded', 'false');
+                    dropdownMenu.classList.remove('active');
+                    userProfileBtn.focus();
+                }
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                        // Close mobile menu if open
+                        if (navLinks.classList.contains('active')) {
+                            navLinks.classList.remove('active');
+                            mobileToggle.classList.remove('active');
+                            mobileToggle.setAttribute('aria-expanded', 'false');
+                            document.body.classList.remove('menu-open');
+                        }
+                    }
+                }
+            });
+        });
+
+        // Active link highlighting on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinksArray = document.querySelectorAll('.nav-link[href^="#"]');
+
+        if (sections.length > 0 && navLinksArray.length > 0) {
+            window.addEventListener('scroll', function () {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (window.pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinksArray.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+    });
+</script>

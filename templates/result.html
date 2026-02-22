@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Pawan Simha">
+    <title>Match Result - ReuniteAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
+    <style>
+        body, input, button, select, textarea { font-family: 'Instrument Sans', sans-serif; }
+        @media (max-width: 768px) {
+            .result-card { padding: 20px; }
+            .person-details { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    {% include 'navigation.html' %}
+
+    <div class="hero-section hero-simple">
+        <div class="hero-content">
+            <h1>Match Result</h1>
+            <p>Verification analysis complete.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if result.status == "match" %}
+            <div class="result-card match">
+                <div class="result-header">
+                    <h2>✅ Match Found!</h2>
+                    <p class="similarity">Similarity: {{ result.similarity }}%</p>
+                </div>
+                
+                {% if result.person %}
+                    <div class="person-details">
+                        <div class="detail-row">
+                            <strong>Name:</strong>
+                            <span>{{ result.person.full_name }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <strong>Guardian Name:</strong>
+                            <span>{{ result.person.guardian_name }}</span>
+                        </div>
+                        {% if result.person.contact %}
+                            <div class="detail-row">
+                                <strong>Contact Phone:</strong>
+                                <span>{{ result.person.contact.phone }}</span>
+                            </div>
+                            {% if result.person.contact.email %}
+                                <div class="detail-row">
+                                    <strong>Contact Email:</strong>
+                                    <span>{{ result.person.contact.email }}</span>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if result.person.address %}
+                            <div class="detail-row">
+                                <strong>Missing Location:</strong>
+                                <span>{{ result.person.address.missing_location }}</span>
+                            </div>
+                            {% if result.person.address.missing_date %}
+                                <div class="detail-row">
+                                    <strong>Missing Date:</strong>
+                                    <span>{{ result.person.address.missing_date }}</span>
+                                </div>
+                            {% endif %}
+                            {% if result.person.address.home_address %}
+                                <div class="detail-row">
+                                    <strong>Home Address:</strong>
+                                    <span>{{ result.person.address.home_address }}</span>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if result.person.image_path %}
+                            <div class="detail-row">
+                                <strong>Reference Image:</strong>
+                                <img src="/images/{{ result.person.image_path.split('images/')[-1] if 'images/' in result.person.image_path else result.person.image_path }}" alt="Missing Person" style="max-width: 200px; margin-top: 10px; border-radius: 8px;">
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+        {% elif result.status == "no_match" %}
+            <div class="result-card no-match">
+                <div class="result-header">
+                    <h2>❌ No Match Found</h2>
+                    {% if result.similarity %}
+                        <p class="similarity">Highest Similarity: {{ result.similarity }}%</p>
+                    {% endif %}
+                </div>
+                
+                <p>The uploaded image did not match any records in our database above the threshold (60%).</p>
+                
+                {% if result.image_path and session.role != 'admin' %}
+                    <div style="margin-top: 20px;">
+                        <a href="/register_missing?image_path={{ result.image_path }}" class="btn-primary" style="display: inline-block; width: auto;">
+                            Report as Missing Person
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+        {% elif result.status == "error" %}
+            <div class="result-card error">
+                <div class="result-header">
+                    <h2>⚠️ Error</h2>
+                </div>
+                <p>{{ result.message }}</p>
+                <a href="/upload" class="btn-primary" style="display: inline-block; width: auto;">Try Again</a>
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 30px; text-align: center; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+            <a href="/upload" class="btn-secondary" style="width: auto;">Upload Another Image</a>
+            {% if session.role == 'admin' %}
+                <a href="/admin/dashboard" class="btn-secondary" style="width: auto;">Back to Dashboard</a>
+            {% else %}
+                <a href="/user/home" class="btn-secondary" style="width: auto;">Back to Home</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

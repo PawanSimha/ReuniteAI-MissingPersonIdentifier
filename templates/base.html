@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="ReuniteAI - An AI-powered tool for finding missing persons using facial recognition.">
+    <meta name="keywords" content="missing persons, AI, facial recognition, ReuniteAI, social impact">
+    <meta name="author" content="Pawan Simha">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="ReuniteAI - Missing Person Identification">
+    <meta property="og:description" content="An AI-powered tool for finding missing persons using facial recognition.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/favicon.png') }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+
+    <title>ReuniteAI - Missing Person Identification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
+    <style>
+        body,
+        input,
+        button,
+        select,
+        textarea {
+            font-family: 'Instrument Sans', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    {% if session.get('user_email') %}
+    {% include 'navigation.html' %}
+    {% endif %}
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'footer.html' %}
+</body>
+
+</html>

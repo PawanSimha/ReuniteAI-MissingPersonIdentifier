@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Pawan Simha">
+    <title>Contact Us - ReuniteAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
+    <style>
+        body, input, button, select, textarea { font-family: 'Instrument Sans', sans-serif; }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        .contact-info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        .info-item i {
+            color: var(--primary-color, #4a90e2);
+            margin-right: 15px;
+            font-size: 24px;
+        }
+        .info-item h4 {
+            margin: 0 0 5px 0;
+            color: var(--text-dark, #333);
+        }
+        .info-item p {
+            margin: 0;
+            color: var(--text-light, #666);
+        }
+        @media (max-width: 768px) {
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    {% include 'navigation.html' %}
+
+    <div class="hero-section hero-simple">
+        <div class="hero-content">
+            <h1>Contact Us</h1>
+            <p>We're here to help. Reach out to us for support, inquiries, or collaboration.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="contact-grid">
+            <!-- Contact Form -->
+            <div class="form-card" style="margin: 0; width: 100%;">
+                <h3 style="margin-bottom: 20px;">Send us a Message</h3>
+                <form id="contactForm" action="https://formsubmit.co/ajax/pawansimha.pc@gmail.com" method="POST">
+                    <input type="hidden" name="_subject" value="New Contact Form Submission - ReuniteAI">
+                    <input type="hidden" name="_captcha" value="false">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address (e.g., user@example.com)">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject">
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="research">Research Collaboration</option>
+                            <option value="report">Report an Issue</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="How can we help you?"></textarea>
+                    </div>
+                    <div id="form-message" style="display: none; margin-bottom: 15px;"></div>
+                    <button type="submit" class="btn-primary">Send Message</button>
+                </form>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <div class="contact-info-card">
+                    <h3 style="margin-bottom: 25px;">Get in Touch</h3>
+                    
+                    <div class="info-item">
+                        <i class="material-icons">email</i>
+                        <div>
+                            <h4>Email Us</h4>
+                            <p><a href="mailto:pawansimha.pc@gmail.com">pawansimha.pc@gmail.com</a></p>
+                            <p><small>For general inquiries and support</small></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="material-icons">school</i>
+                        <div>
+                            <h4>Academic Research</h4>
+                            <p>SNPSU Academic Research</p>
+                            <p>Department of Computer Science</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="material-icons">schedule</i>
+                        <div>
+                            <h4>Office Hours</h4>
+                            <p>Monday - Friday</p>
+                            <p>9:00 AM - 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-info-card" style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 15px;">FAQ</h3>
+                    <p>Have questions about how ReuniteAI works? Check out our frequently asked questions.</p>
+                    <a href="/user/home#faq" class="btn-secondary" style="margin-top: 10px; display: inline-block;">View FAQ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const messageDiv = document.getElementById('form-message');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerText;
+
+            submitBtn.innerText = 'Sending...';
+            submitBtn.disabled = true;
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                messageDiv.style.display = 'block';
+                messageDiv.className = 'alert alert-success';
+                messageDiv.innerText = 'Message sent successfully!';
+                form.reset();
+            })
+            .catch(error => {
+                messageDiv.style.display = 'block';
+                messageDiv.className = 'alert alert-danger';
+                messageDiv.innerText = 'Failed to send message. Please try again.';
+            })
+            .finally(() => {
+                submitBtn.innerText = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>

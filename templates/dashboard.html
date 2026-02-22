@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard for ReuniteAI - Manage users and missing person cases.">
+    <meta name="keywords" content="admin, dashboard, management, ReuniteAI">
+    <meta name="author" content="Pawan Simha">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Admin Dashboard - ReuniteAI">
+    <meta property="og:description" content="Administrative panel for managing ReuniteAI platform data.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/favicon.png') }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+    <title>Admin Dashboard - ReuniteAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
+    <style>
+        body,
+        input,
+        button,
+        select,
+        textarea {
+            font-family: 'Instrument Sans', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .impact-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    {% include 'navigation.html' %}
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <div class="hero-section hero-simple">
+            <div class="hero-content">
+                <span class="academic-badge">Admin Panel</span>
+                <h1>System Overview</h1>
+                <p>Manage users, missing person records, and system performance.</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Stats Grid (Impact Bar style) -->
+            <div class="impact-bar">
+                <div class="impact-item">
+                    <h2>{{ total_users }}</h2>
+                    <p>Total Users</p>
+                </div>
+
+                <div class="impact-item">
+                    <h2>{{ total_missing }}</h2>
+                    <p>Total Missing</p>
+                </div>
+
+                <div class="impact-item">
+                    <h2>{{ total_matched }}</h2>
+                    <p>Matched Cases</p>
+                </div>
+
+                <div class="impact-item">
+                    <h2>{{ total_missing - total_matched }}</h2>
+                    <p>Active Cases</p>
+                </div>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="section-title-center" style="margin-top: 50px;">
+                <h2>Administrative Actions</h2>
+                <p>Manage the platform's data and operations</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="action-card">
+                    <span class="step-label">Management</span>
+                    <h3><i class="material-icons" style="color: var(--primary-blue);">people</i> View All Users</h3>
+                    <p>View all registered users in the system</p>
+                    <a href="/users" class="btn-action">View Users &rarr;</a>
+                </div>
+
+                <div class="action-card">
+                    <span class="step-label">Database</span>
+                    <h3><i class="material-icons" style="color: var(--accent-warning);">assignment</i> View Missing
+                        Persons</h3>
+                    <p>View all missing person records with details</p>
+                    <a href="/missing" class="btn-action">View Records &rarr;</a>
+                </div>
+
+                <div class="action-card">
+                    <span class="step-label">Operations</span>
+                    <h3><i class="material-icons" style="color: var(--accent-success);">cloud_upload</i> Upload & Test
+                    </h3>
+                    <p>Upload images for testing and verification</p>
+                    <a href="/upload" class="btn-action">Upload Image &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'footer.html' %}
+</body>
+
+</html>
