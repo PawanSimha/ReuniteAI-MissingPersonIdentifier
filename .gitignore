@@ -41,4 +41,6 @@ Thumbs.db
 
 # Project Specific
 images/temp/
+images/database/
+static/images/bin/
 *.log
