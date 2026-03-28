@@ -54,7 +54,8 @@
                             <td>{{ loop.index }}</td>
                             <td>
                                 {% if person.image_path %}
-                                    <img src="/images/{{ person.image_path.split('images/')[-1] if 'images/' in person.image_path else person.image_path }}" 
+                                    {% set clean_img = person.image_path.replace('\\', '/') %}
+                                    <img src="/{{ 'images/' ~ clean_img.split('images/')[-1] if 'images/' in clean_img else 'images/' ~ clean_img }}" 
                                          alt="{{ person.full_name }}" 
                                          class="table-image"
                                          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23cbd5e0\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23718096\' font-family=\'sans-serif\' font-size=\'10\'%3ENo Img%3C/text%3E%3C/svg%3E'">

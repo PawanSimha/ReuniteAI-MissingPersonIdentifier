@@ -78,7 +78,9 @@
                         {% if result.person.image_path %}
                             <div class="detail-row">
                                 <strong>Reference Image:</strong>
-                                <img src="/images/{{ result.person.image_path.split('images/')[-1] if 'images/' in result.person.image_path else result.person.image_path }}" alt="Missing Person" style="max-width: 200px; margin-top: 10px; border-radius: 8px;">
+                                {% set clean_ref_img = result.person.image_path.replace('\\', '/') %}
+                                {% set img_url = 'images/' ~ clean_ref_img.split('images/')[-1] if 'images/' in clean_ref_img else 'images/' ~ clean_ref_img %}
+                                <img src="/{{ img_url }}" alt="Missing Person" style="max-width: 200px; margin-top: 10px; border-radius: 8px;">
                             </div>
                         {% endif %}
                     </div>

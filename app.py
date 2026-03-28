@@ -181,9 +181,9 @@ def upload():
             # Run matching pipeline
             result = run_matching_pipeline(file_path)
             
-            # Store relative path for template display
+            # Store relative path for template display (ensure no leading slash)
             if "image_path" in result:
-                result["image_path"] = os.path.join("images", "temp", filename)
+                result["image_path"] = f"images/temp/{filename}"
             
             return render_template("result.html", result=result)
         else:
@@ -201,9 +201,18 @@ def register_missing():
     if request.method == "POST":
         image_path = request.form.get("image_path")
         
-        # Handle both absolute and relative paths
-        if image_path and not os.path.isabs(image_path):
-            image_path = os.path.join(BASE_DIR, image_path)
+        # Handle both absolute and relative paths for backend processing
+        if image_path:
+            # Normalize slashes first
+            image_path = image_path.replace("/", os.sep).replace("\\", os.sep)
+            
+            # If relative, join with BASE_DIR
+            if not os.path.isabs(image_path):
+                # If it starts with images/, ensure we join correctly
+                # On Windows if images_dir is C:\...\images and path is images\temp...
+                # we don't want C:\...\images\images\...
+                # Actually BASE_DIR is project root, so joining with images/... is fine.
+                image_path = os.path.join(BASE_DIR, image_path)
         
         if not image_path or not os.path.exists(image_path):
             flash("Image file not found", "error")
@@ -246,12 +255,20 @@ def register_missing():
         flash("No image provided", "error")
         return redirect(url_for("upload"))
     
-    # Store original path for template (will be processed in POST)
-    original_path = image_path
+    # Standardize image_path for URLs: no leading slash, forward slashes
+    # If it was absolute, make it relative to images/
+    clean_path = image_path.replace("\\", "/")
+    if "images/" in clean_path:
+        clean_path = clean_path.split("images/")[1]
+        clean_path = "images/" + clean_path
+    
+    # Ensure NO leading slash for template consistency (template adds it)
+    if clean_path.startswith("/"):
+        clean_path = clean_path[1:]
     
     return render_template(
         "register_missing.html",
-        image_path=original_path
+        image_path=clean_path
     )
 
 # ---------------- VIEW MISSING PERSONS (ADMIN) ----------------
@@ -292,7 +309,9 @@ def logout():
 def serve_image(filename):
     """Serve images from the images directory"""
     images_dir = os.path.join(BASE_DIR, 'images')
-    return send_from_directory(images_dir, filename)
+    # Use os-specific separators for the filename to be safe
+    safe_filename = filename.replace('/', os.sep).replace('\\', os.sep)
+    return send_from_directory(images_dir, safe_filename)
 
 # ---------------- 404 PAGE ROUTE ----------------
 @app.route("/404")
