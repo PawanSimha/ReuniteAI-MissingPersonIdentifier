@@ -309,8 +309,8 @@ def logout():
 def serve_image(filename):
     """Serve images from the images directory"""
     images_dir = os.path.join(BASE_DIR, 'images')
-    # Use os-specific separators for the filename to be safe
-    safe_filename = filename.replace('/', os.sep).replace('\\', os.sep)
+    # Werkzeug requires forward slashes in send_from_directory filename
+    safe_filename = filename.replace('\\', '/')
     return send_from_directory(images_dir, safe_filename)
 
 # ---------------- 404 PAGE ROUTE ----------------
