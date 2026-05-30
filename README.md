@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="ReuniteAi.webp" width="140" alt="ReuniteAI Logo">
+  <img src="static/images/favicon.png" width="140" alt="ReuniteAI Logo">
 </p>
 
 <h1 align="center">ReuniteAI</h1>
@@ -14,6 +14,10 @@
   <img src="https://img.shields.io/badge/face_recognition-dlib-FF6F00?style=for-the-badge&logo=openai&logoColor=white" alt="face_recognition">
   <img src="https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge&logo=gnu&logoColor=white" alt="GPLv3">
   <img src="https://img.shields.io/badge/Status-Production--Ready-28A745?style=for-the-badge" alt="Status">
+</p>
+
+<p align="center">
+  <img src="public/ReuniteAi.webp" alt="Biometric base missing person identification" width="800" style="border-radius: 12px;" />
 </p>
 
 ---
