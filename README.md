@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="static/images/favicon.png" width="140" alt="ReuniteAI Logo">
+  <img src="https://raw.githubusercontent.com/PawanSimha/ReuniteAi/main/static/images/favicon.png" width="140" alt="ReuniteAI Logo">
 </p>
 
 <h1 align="center">ReuniteAI</h1>
@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="public/ReuniteAi.webp" alt="Biometric base missing person identification" width="800" style="border-radius: 12px;" />
+  <img src="https://raw.githubusercontent.com/PawanSimha/ReuniteAi/main/ReuniteAi.webp" alt="Biometric base missing person identification" width="800" style="border-radius: 12px;" />
 </p>
 
 ---
