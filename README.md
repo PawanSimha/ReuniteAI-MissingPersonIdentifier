@@ -4,7 +4,7 @@
 
 <h1 align="center">ReuniteAI</h1>
 <p align="center">
-  <em>AI-powered missing person identification &mdash; reuniting families through facial biometrics.</em>
+  <em>AI-powered missing person identification - reuniting families through facial biometrics.</em>
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@
 
 ## Problem & Value Proposition
 
-Every year, **thousands of individuals go missing**, and traditional search methods — physical posters, manual case-file reviews, fragmented police databases — are too slow and lack cross-agency scalability. **ReuniteAI** solves this by providing a centralized, biometric-driven platform where anyone can upload a photo of an unidentified person and receive an **instant, AI-powered match** against a growing database of missing-person records.
+Every year, **thousands of individuals go missing**, and traditional search methods - physical posters, manual case-file reviews, fragmented police databases - are too slow and lack cross-agency scalability. **ReuniteAI** solves this by providing a centralized, biometric-driven platform where anyone can upload a photo of an unidentified person and receive an **instant, AI-powered match** against a growing database of missing-person records.
 
 The core value chain: **Upload → Detect → Encode → Match → Reunite.**
 
@@ -38,7 +38,7 @@ The core value chain: **Upload → Detect → Encode → Match → Reunite.**
 | **Secure Auth** | bcrypt-hashed signup/login with session management |
 | **Report Missing** | Register a missing person with full metadata & photograph |
 | **AI Search** | Upload a found person's photo; receive instant similarity scores |
-| **Match Results** | Detailed match view — name, guardian, contact, location, date |
+| **Match Results** | Detailed match view - name, guardian, contact, location, date |
 | **Profile** | Self-service account management |
 
 ### 🛡️ Admin Panel
@@ -142,8 +142,8 @@ ReuniteAI/
 ### Prerequisites
 
 - Python **3.8+**
-- MongoDB instance running on `localhost:27017` (or remote — configure via `.env`)
-- `dlib` system dependencies (CMake, C++ toolchain — bundled via `face-recognition` on Windows)
+- MongoDB instance running on `localhost:27017` (or remote - configure via `.env`)
+- `dlib` system dependencies (CMake, C++ toolchain - bundled via `face-recognition` on Windows)
 
 ### Setup
 
@@ -175,7 +175,7 @@ Open **`http://127.0.0.1:5000`** in your browser.
 
 | Variable | Default | Description |
 | :--- | :--- | :--- |
-| `SECRET_KEY` | — | Flask session signing key **(set a strong value in production)** |
+| `SECRET_KEY` | - | Flask session signing key **(set a strong value in production)** |
 | `MONGO_URI` | `mongodb://localhost:27017/` | MongoDB connection string |
 | `DB_NAME` | `reuniteai_db` | MongoDB database name |
 | `ADMIN_EMAIL` | `admin@example.com` | Auto-created admin login |
@@ -188,9 +188,9 @@ Open **`http://127.0.0.1:5000`** in your browser.
 
 | Method | Endpoint | Auth | Description |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/` | — | Login page |
-| `GET` / `POST` | `/signup` | — | User registration |
-| `POST` | `/login` | — | User login |
+| `GET` | `/` | - | Login page |
+| `GET` / `POST` | `/signup` | - | User registration |
+| `POST` | `/login` | - | User login |
 | `GET` | `/user/home` | Session | User landing page |
 | `GET` | `/admin/dashboard` | Admin | Admin analytics dashboard |
 | `GET` / `POST` | `/upload` | Session | Upload image for AI matching |
@@ -198,18 +198,18 @@ Open **`http://127.0.0.1:5000`** in your browser.
 | `GET` | `/profile` | Session | View user profile |
 | `GET` | `/missing` | Admin | List all missing persons |
 | `GET` | `/users` | Admin | List all registered users |
-| `GET` | `/contact` | — | Contact page |
+| `GET` | `/contact` | - | Contact page |
 | `GET` | `/logout` | Session | Clear session & logout |
-| `GET` | `/images/<path>` | — | Serve stored images |
+| `GET` | `/images/<path>` | - | Serve stored images |
 
 ---
 
 ## Roadmap
 
-- [ ] **Mobile Companion App** — React Native or Flutter client for field operatives
-- [ ] **Geo-Tagging & Maps** — Leaflet/Mapbox integration to visualize missing locations
-- [ ] **SMS / Email Alerts** — Automated notification to guardians upon match detection
-- [ ] **Public REST API** — Token-gated endpoints for third-party agency integration
+- [ ] **Mobile Companion App** - React Native or Flutter client for field operatives
+- [ ] **Geo-Tagging & Maps** - Leaflet/Mapbox integration to visualize missing locations
+- [ ] **SMS / Email Alerts** - Automated notification to guardians upon match detection
+- [ ] **Public REST API** - Token-gated endpoints for third-party agency integration
 
 ---
 
@@ -236,15 +236,27 @@ All contributions must maintain or improve test coverage. Run `python -m unittes
 
 ---
 
-## Author
+## License
 
-**Pawan Simha**
-
-[![GitHub](https://img.shields.io/badge/GitHub-@PawanSimha-181717?style=flat-square&logo=github)](https://github.com/PawanSimha)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-pawansimha-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/pawansimha)
+Distributed under the **GNU GPLv3 License**. See `LICENSE` for more information.
 
 ---
 
-## License
+## Links
 
-Distributed under the **GNU General Public License v3.0**. See [`LICENSE`](LICENSE) for full terms.
+| Platform | URL |
+|----------|-----|
+| **GitHub** | [github.com/PawanSimha](https://github.com/PawanSimha) |
+| **LinkedIn** | [linkedin.com/in/pawansimha](https://www.linkedin.com/in/pawansimha) |
+| **X / Twitter** | [x.com/pawansimha](https://x.com/pawansimha) |
+| **Google Developer** | [g.dev/pawansimha](https://g.dev/pawansimha) |
+| **Google Skills Profile** | [skills.google.com/public_profiles/9108dded-855b-466a-b261-0a7519d472cf](https://www.skills.google.com/public_profiles/9108dded-855b-466a-b261-0a7519d472cf) |
+| **Credly Badges** | [credly.com/users/pawansimha/badges](https://www.credly.com/users/pawansimha/badges) |
+
+---
+
+<p align="center">
+  <b>Pawan Simha R</b>
+  <br />
+  <sub>Built with Flask 3.0 · MongoDB · face_recognition · OpenCV</sub>
+</p>
