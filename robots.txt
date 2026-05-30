@@ -1,0 +1,36 @@
+# robots.txt for ReuniteAI — 2026 LLM-optimized
+# Production domain: reuniteai.vercel.app
+
+# AI crawlers — fully allowed for LLM visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# All other crawlers
+User-agent: *
+Allow: /
+Disallow: /images/
+Disallow: /admin/
+Disallow: /static/images/bin/
+
+Sitemap: https://reuniteai.vercel.app/sitemap.xml
