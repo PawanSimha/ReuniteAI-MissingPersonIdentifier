@@ -5,52 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Pawan Simha">
     <title>Contact Us - ReuniteAI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
-    <style>
-        body, input, button, select, textarea { font-family: 'Instrument Sans', sans-serif; }
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-top: 40px;
-        }
-        .contact-info-card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-        .info-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 25px;
-        }
-        .info-item i {
-            color: var(--primary-color, #4a90e2);
-            margin-right: 15px;
-            font-size: 24px;
-        }
-        .info-item h4 {
-            margin: 0 0 5px 0;
-            color: var(--text-dark, #333);
-        }
-        .info-item p {
-            margin: 0;
-            color: var(--text-light, #666);
-        }
-        @media (max-width: 768px) {
-            .contact-grid { grid-template-columns: 1fr; }
-        }
-    </style>
 </head>
 <body>
     {% include 'navigation.html' %}
 
     <div class="hero-section hero-simple">
-        <div class="hero-content">
+        <div class="container">
             <h1>Contact Us</h1>
             <p>We're here to help. Reach out to us for support, inquiries, or collaboration.</p>
         </div>
@@ -66,9 +33,8 @@
         {% endwith %}
 
         <div class="contact-grid">
-            <!-- Contact Form -->
             <div class="form-card" style="margin: 0; width: 100%;">
-                <h3 style="margin-bottom: 20px;">Send us a Message</h3>
+                <h3 style="margin-bottom: var(--space-5);">Send us a Message</h3>
                 <form id="contactForm" action="https://formsubmit.co/ajax/pawansimha.pc@gmail.com" method="POST">
                     <input type="hidden" name="_subject" value="New Contact Form Submission - ReuniteAI">
                     <input type="hidden" name="_captcha" value="false">
@@ -93,16 +59,14 @@
                         <label for="message">Message</label>
                         <textarea id="message" name="message" rows="5" required placeholder="How can we help you?"></textarea>
                     </div>
-                    <div id="form-message" style="display: none; margin-bottom: 15px;"></div>
-                    <button type="submit" class="btn-primary">Send Message</button>
+                    <div id="form-message" style="display: none; margin-bottom: var(--space-4);"></div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
                 </form>
             </div>
 
-            <!-- Contact Information -->
             <div class="contact-info">
                 <div class="contact-info-card">
-                    <h3 style="margin-bottom: 25px;">Get in Touch</h3>
-                    
+                    <h3 style="margin-bottom: var(--space-5);">Get in Touch</h3>
                     <div class="info-item">
                         <i class="material-icons">email</i>
                         <div>
@@ -111,7 +75,6 @@
                             <p><small>For general inquiries and support</small></p>
                         </div>
                     </div>
-
                     <div class="info-item">
                         <i class="material-icons">school</i>
                         <div>
@@ -120,7 +83,6 @@
                             <p>Department of Computer Science</p>
                         </div>
                     </div>
-
                     <div class="info-item">
                         <i class="material-icons">schedule</i>
                         <div>
@@ -130,11 +92,11 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="contact-info-card" style="margin-top: 30px;">
-                    <h3 style="margin-bottom: 15px;">FAQ</h3>
+
+                <div class="contact-info-card" style="margin-top: var(--space-6);">
+                    <h3 style="margin-bottom: var(--space-3);">FAQ</h3>
                     <p>Have questions about how ReuniteAI works? Check out our frequently asked questions.</p>
-                    <a href="/user/home#faq" class="btn-secondary" style="margin-top: 10px; display: inline-block;">View FAQ</a>
+                    <a href="/user/home#faq" class="btn-secondary" style="margin-top: var(--space-3); display: inline-block;">View FAQ</a>
                 </div>
             </div>
         </div>
@@ -143,39 +105,38 @@
     {% include 'footer.html' %}
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const form = this;
-            const messageDiv = document.getElementById('form-message');
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.innerText;
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        var messageDiv = document.getElementById('form-message');
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var originalBtnText = submitBtn.innerText;
 
-            submitBtn.innerText = 'Sending...';
-            submitBtn.disabled = true;
+        submitBtn.innerText = 'Sending...';
+        submitBtn.disabled = true;
 
-            fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
-            })
-            .then(response => response.json())
-            .then(data => {
-                messageDiv.style.display = 'block';
-                messageDiv.className = 'alert alert-success';
-                messageDiv.innerText = 'Message sent successfully!';
-                form.reset();
-            })
-            .catch(error => {
-                messageDiv.style.display = 'block';
-                messageDiv.className = 'alert alert-danger';
-                messageDiv.innerText = 'Failed to send message. Please try again.';
-            })
-            .finally(() => {
-                submitBtn.innerText = originalBtnText;
-                submitBtn.disabled = false;
-            });
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            messageDiv.style.display = 'block';
+            messageDiv.className = 'alert alert-success';
+            messageDiv.innerText = 'Message sent successfully!';
+            form.reset();
+        })
+        .catch(function(error) {
+            messageDiv.style.display = 'block';
+            messageDiv.className = 'alert alert-danger';
+            messageDiv.innerText = 'Failed to send message. Please try again.';
+        })
+        .finally(function() {
+            submitBtn.innerText = originalBtnText;
+            submitBtn.disabled = false;
         });
+    });
     </script>
 </body>
 </html>

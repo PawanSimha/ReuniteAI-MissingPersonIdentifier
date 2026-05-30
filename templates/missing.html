@@ -5,22 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Pawan Simha">
     <title>Missing Persons - ReuniteAI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
-    <style>
-        body, input, button, select, textarea { font-family: 'Instrument Sans', sans-serif; }
-        @media (max-width: 768px) {
-            .table-container { overflow-x: auto; }
-        }
-    </style>
 </head>
 <body>
     {% include 'navigation.html' %}
 
     <div class="hero-section hero-simple">
-        <div class="hero-content">
+        <div class="container">
             <h1>Missing Persons Database</h1>
             <p>Comprehensive registry of all reported missing cases and their status.</p>
         </div>
@@ -28,22 +24,22 @@
 
     <div class="container">
         <div class="table-container">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin: 0; color: var(--text-dark);">Records</h3>
-                <a href="/admin/dashboard" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">&larr; Back to Dashboard</a>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-4); padding: var(--space-4);">
+                <h3 style="margin: 0;">Records</h3>
+                <a href="/admin/dashboard" class="btn-secondary" style="padding: var(--space-2) var(--space-4);">&larr; Back to Dashboard</a>
             </div>
 
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Serial No.</th>
+                        <th>#</th>
                         <th>Image</th>
-                        <th>Person Name</th>
-                        <th>Guardian Name</th>
+                        <th>Name</th>
+                        <th>Guardian</th>
                         <th>Missing Date</th>
-                        <th>Missing Location</th>
+                        <th>Location</th>
                         <th>Contact</th>
-                        <th>Home Address</th>
+                        <th>Address</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -51,34 +47,27 @@
                     {% if persons %}
                         {% for person in persons %}
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>
+                            <td data-label="#"> {{ loop.index }}</td>
+                            <td data-label="Image">
                                 {% if person.image_path %}
                                     {% set clean_img = person.image_path.replace('\\', '/') %}
-                                    <img src="/{{ 'images/' ~ clean_img.split('images/')[-1] if 'images/' in clean_img else 'images/' ~ clean_img }}" 
-                                         alt="{{ person.full_name }}" 
-                                         class="table-image"
-                                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23cbd5e0\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23718096\' font-family=\'sans-serif\' font-size=\'10\'%3ENo Img%3C/text%3E%3C/svg%3E'">
+                                    <img src="/{{ 'images/' ~ clean_img.split('images/')[-1] if 'images/' in clean_img else 'images/' ~ clean_img }}" alt="{{ person.full_name }}" class="table-image">
                                 {% else %}
-                                    <span style="color: #cbd5e0; font-size: 0.8rem;">No Image</span>
+                                    <span style="color: var(--n-400); font-size: var(--text-xs);">No Image</span>
                                 {% endif %}
                             </td>
-                            <td><strong>{{ person.full_name }}</strong></td>
-                            <td>{{ person.guardian_name }}</td>
-                            <td>{{ person.address.missing_date if person.address and person.address.missing_date else 'N/A' }}</td>
-                            <td>{{ person.address.missing_location if person.address and person.address.missing_location else 'N/A' }}</td>
-                            <td>
+                            <td data-label="Name"><strong>{{ person.full_name }}</strong></td>
+                            <td data-label="Guardian">{{ person.guardian_name }}</td>
+                            <td data-label="Missing Date">{{ person.address.missing_date if person.address and person.address.missing_date else 'N/A' }}</td>
+                            <td data-label="Location">{{ person.address.missing_location if person.address and person.address.missing_location else 'N/A' }}</td>
+                            <td data-label="Contact">
                                 {% if person.contact %}
                                     Phone: {{ person.contact.phone }}<br>
-                                    {% if person.contact.email %}
-                                        Email: {{ person.contact.email }}
-                                    {% endif %}
-                                {% else %}
-                                    N/A
-                                {% endif %}
+                                    {% if person.contact.email %}Email: {{ person.contact.email }}{% endif %}
+                                {% else %}N/A{% endif %}
                             </td>
-                            <td>{{ person.address.home_address if person.address and person.address.home_address else 'N/A' }}</td>
-                            <td>
+                            <td data-label="Address">{{ person.address.home_address if person.address and person.address.home_address else 'N/A' }}</td>
+                            <td data-label="Status">
                                 <span class="badge badge-{{ 'matched' if person.case_status == 'matched' else 'active' }}">
                                     {{ person.case_status }}
                                 </span>
@@ -87,7 +76,7 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="9" style="text-align: center;">No missing persons records found</td>
+                            <td colspan="9" style="text-align: center; padding: var(--space-8); color: var(--n-400);">No missing persons records found</td>
                         </tr>
                     {% endif %}
                 </tbody>

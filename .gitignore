@@ -2,11 +2,17 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
 
 # Virtual Environment
 venv/
 env/
+.venv/
+
+# Environment & Secrets
 .env
+.env.local
+.env.production
 
 # Distribution / Packaging
 build/
@@ -25,22 +31,44 @@ wheels/
 .installed.cfg
 *.egg
 
-# Database
+# Database & Data
 *.db
 *.sqlite3
 db_dump.txt
+*.dump
 
-# IDE
+# IDE/Editor
 .vscode/
 .idea/
 *.swp
+*.swo
+*~
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
+Desktop.ini
 
-# Project Specific
+# Project data (user uploads)
 images/temp/
 images/database/
+
+# Junk/Backup
 static/images/bin/
+tmp/
+
+# Reports (not source)
+Synopsis & Reports/
+
+# Test cache
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Logs
 *.log
+*.journal
+
+# Dev scripts (not for prod)
+register_bulk_users.py
+dump_db.py

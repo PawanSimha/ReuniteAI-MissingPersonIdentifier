@@ -5,22 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Pawan Simha">
     <title>All Users - ReuniteAI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
-    <style>
-        body, input, button, select, textarea { font-family: 'Instrument Sans', sans-serif; }
-        @media (max-width: 768px) {
-            .table-container { overflow-x: auto; }
-        }
-    </style>
 </head>
 <body>
     {% include 'navigation.html' %}
 
     <div class="hero-section hero-simple">
-        <div class="hero-content">
+        <div class="container">
             <h1>User Management</h1>
             <p>View and manage all registered users on the platform.</p>
         </div>
@@ -28,15 +24,15 @@
 
     <div class="container">
         <div class="table-container">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin: 0; color: var(--text-dark);">Registered Users</h3>
-                <a href="/admin/dashboard" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">&larr; Back to Dashboard</a>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-4); padding: var(--space-4);">
+                <h3 style="margin: 0;">Registered Users</h3>
+                <a href="/admin/dashboard" class="btn-secondary" style="padding: var(--space-2) var(--space-4);">&larr; Back to Dashboard</a>
             </div>
 
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Serial No.</th>
+                        <th>#</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Username</th>
@@ -49,22 +45,22 @@
                     {% if users %}
                         {% for user in users %}
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ user.first_name }}</td>
-                            <td>{{ user.last_name }}</td>
-                            <td>{{ user.username }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>
+                            <td data-label="#"> {{ loop.index }}</td>
+                            <td data-label="First Name">{{ user.first_name }}</td>
+                            <td data-label="Last Name">{{ user.last_name }}</td>
+                            <td data-label="Username">{{ user.username }}</td>
+                            <td data-label="Email">{{ user.email }}</td>
+                            <td data-label="Role">
                                 <span class="badge badge-{{ 'admin' if user.role == 'admin' else 'user' }}">
                                     {{ user.role }}
                                 </span>
                             </td>
-                            <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') if user.created_at else 'N/A' }}</td>
+                            <td data-label="Created At">{{ user.created_at.strftime('%Y-%m-%d %H:%M') if user.created_at else 'N/A' }}</td>
                         </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="7" style="text-align: center;">No users found</td>
+                            <td colspan="7" style="text-align: center; padding: var(--space-8); color: var(--n-400);">No users found</td>
                         </tr>
                     {% endif %}
                 </tbody>

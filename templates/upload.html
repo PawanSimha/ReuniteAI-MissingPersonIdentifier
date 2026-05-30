@@ -1,40 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Pawan Simha">
     <title>Upload Image - ReuniteAI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
-    <style>
-        body,
-        input,
-        button,
-        select,
-        textarea {
-            font-family: 'Instrument Sans', sans-serif;
-        }
-
-        @media (max-width: 768px) {
-            .form-card {
-                padding: 20px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-        }
-    </style>
 </head>
-
 <body>
     {% include 'navigation.html' %}
 
     <div class="hero-section hero-simple">
-        <div class="hero-content">
+        <div class="container">
             <h1>Image Verification</h1>
             <p>Upload an image to verify if a person is in our missing persons database.</p>
         </div>
@@ -59,8 +41,8 @@
                     <small>Supported formats: JPG, PNG, JPEG</small>
                 </div>
 
-                <div id="preview-container" style="display: none; margin: 20px 0;">
-                    <img id="image-preview" src="" alt="Preview" style="max-width: 300px; border-radius: 8px;">
+                <div id="preview-container" style="display: none; margin: var(--space-5) 0;">
+                    <img id="image-preview" src="" alt="Preview" style="max-width: 100%; border-radius: var(--radius);">
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="submit-btn">
@@ -75,5 +57,4 @@
 
     <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
 </body>
-
 </html>

@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="ReuniteAI: An academic AI research project for missing person identification using ethical facial recognition. Secure, private, and built for social good.">
+    <meta name="description" content="ReuniteAI: An academic AI research project for missing person identification using ethical facial recognition. Secure, private, and built for social good.">
     <meta property="og:title" content="ReuniteAI - Ethical AI for Missing Persons">
     <meta property="og:description" content="Academic research platform leveraging AI to reunite families.">
     <meta name="keywords" content="missing persons, AI, facial recognition, ReuniteAI, social impact, ethical AI">
@@ -14,15 +13,13 @@
     <meta property="og:url" content="{{ request.url }}">
     <meta property="og:type" content="website">
     <title>Home - ReuniteAI | Ethical AI for Social Good</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
 
-
-    <!-- JSON-LD Schema for SEO -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -42,22 +39,6 @@
       }
     }
     </script>
-
-    <!-- FAQ Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [{
-        "@type": "Question",
-        "name": "Is uploaded data safe?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. All data is encrypted both in transit and at rest. We use industry-standard security protocols to ensure that sensitive information remains private and is only used for matching purposes."
-        }
-      }]
-    }
-    </script>
 </head>
 
 <body>
@@ -66,42 +47,30 @@
     {% include 'navigation.html' %}
 
     <main id="main-content">
-        <!-- Redesigned SaaS Hero Section -->
         <section id="hero" class="hero-section-saas">
             <div class="container hero-container">
                 <div class="hero-content-left">
-                    <span class="academic-badge custom-badge">Academic
-                        Research Prototype</span>
+                    <span class="academic-badge">Academic Research Prototype</span>
                     <h1>Reuniting Families Through Ethical AI</h1>
-                    <p class="hero-subline">A privacy-first facial recognition platform dedicated to finding missing
-                        persons. Built on ethical principles, powered by advanced machine learning, designed for social
-                        good.</p>
+                    <p class="hero-subline">A privacy-first facial recognition platform dedicated to finding missing persons. Built on ethical principles, powered by advanced machine learning, designed for social good.</p>
 
                     <div class="hero-actions-saas">
-                        <a href="/upload" class="btn-saas btn-saas-primary" aria-label="Start verification process">
-                            Verify a Person
-                        </a>
-                        <a href="/register_missing" class="btn-saas btn-saas-secondary"
-                            aria-label="Report a missing person case">
-                            Report Missing Case
-                        </a>
+                        <a href="/upload" class="btn-cta primary" aria-label="Start verification process">Verify a Person</a>
+                        <a href="/register_missing" class="btn-cta secondary" aria-label="Report a missing person case">Report Missing Case</a>
                     </div>
 
                     <p class="trust-microcopy-saas">
-                        <i class="material-icons small-icon" aria-hidden="true">shield</i> Data is
-                        encrypted & used solely for identification research
+                        <i class="material-icons" aria-hidden="true">shield</i> Data is encrypted & used solely for identification research
                     </p>
                 </div>
 
                 <div class="hero-visual-right">
-                    <img src="{{ url_for('static', filename='images/api.svg') }}" alt="AI Identity Verification"
-                        class="hero-3d-visual">
+                    <img src="{{ url_for('static', filename='images/api.svg') }}" alt="AI Identity Verification" class="hero-3d-visual">
                 </div>
             </div>
         </section>
 
         <div class="container">
-            <!-- Impact Metrics -->
             <div class="impact-bar">
                 <div class="impact-item">
                     <h2>500+</h2>
@@ -125,14 +94,12 @@
             {% endif %}
             {% endwith %}
 
-            <section id="core-capabilities" class="content-section bg-section">
+            <section id="core-capabilities" class="content-section">
                 <div class="section-grid">
                     <div class="section-text">
                         <span class="section-label">What We Do</span>
                         <h2>AI-Powered Missing Person Identification</h2>
-                        <p>ReuniteAI leverages state-of-the-art deep learning models to extract and compare facial
-                            features with unprecedented accuracy. Our system transforms photos into secure mathematical
-                            representations, enabling rapid matching across our database while preserving privacy.</p>
+                        <p>ReuniteAI leverages state-of-the-art deep learning models to extract and compare facial features with unprecedented accuracy. Our system transforms photos into secure mathematical representations, enabling rapid matching across our database while preserving privacy.</p>
                         <div class="feature-list">
                             <div class="feature-item">
                                 <i class="material-icons" aria-hidden="true">psychology</i>
@@ -152,27 +119,22 @@
                                 <i class="material-icons" aria-hidden="true">bolt</i>
                                 <div>
                                     <h3>Real-Time Matching</h3>
-                                    <p>Instant similarity computation across thousands of records which are stored in
-                                        database</p>
+                                    <p>Instant similarity computation across thousands of records which are stored in database</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="section-image">
-                        <img src="{{ url_for('static', filename='images/ai-agent-builder.png') }}"
-                            alt="AI network visualization showing interconnected media and facial recognition technology"
-                            loading="lazy">
+                        <img src="{{ url_for('static', filename='images/ai-agent-builder.png') }}" alt="AI network visualization showing interconnected media and facial recognition technology" loading="lazy">
                     </div>
                 </div>
             </section>
 
-            <!-- Global Crisis Statistics Section -->
-            <section id="global-stats" class="content-section pt-20">
+            <section id="global-stats" class="content-section">
                 <div class="section-title-center">
                     <span class="section-label">Global Crisis</span>
                     <h2>The Scale of the Problem</h2>
-                    <p>Estimated annual missing person reports by country highlight the urgent need for advanced
-                        identification tools.</p>
+                    <p>Estimated annual missing person reports by country highlight the urgent need for advanced identification tools.</p>
                 </div>
 
                 <div class="stats-container">
@@ -185,88 +147,46 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>India</td>
-                                    <td>~870,000</td>
-                                </tr>
-                                <tr>
-                                    <td>United States</td>
-                                    <td>~600,000</td>
-                                </tr>
-                                <tr>
-                                    <td>United Kingdom</td>
-                                    <td>~180,000</td>
-                                </tr>
-                                <tr>
-                                    <td>Germany</td>
-                                    <td>~100,000</td>
-                                </tr>
-                                <tr>
-                                    <td>Mexico</td>
-                                    <td>~100,000</td>
-                                </tr>
-                                <tr>
-                                    <td>Syria</td>
-                                    <td>~100,000</td>
-                                </tr>
-                                <tr>
-                                    <td>Canada</td>
-                                    <td>~71,000</td>
-                                </tr>
-                                <tr>
-                                    <td>Russia</td>
-                                    <td>~45,000+</td>
-                                </tr>
-                                <tr>
-                                    <td>Australia</td>
-                                    <td>~38,000</td>
-                                </tr>
-                                <tr>
-                                    <td>Spain</td>
-                                    <td>~20,000</td>
-                                </tr>
-                                <tr style="background-color: #f3f4f6; font-weight: bold;">
-                                    <td style="color: #111827; font-weight: 800;">TOTAL</td>
-                                    <td style="color: #6366F1; font-weight: 800; font-size: 1.1rem;">~2,124,000</td>
-                                </tr>
+                                <tr><td>India</td><td>~870,000</td></tr>
+                                <tr><td>United States</td><td>~600,000</td></tr>
+                                <tr><td>United Kingdom</td><td>~180,000</td></tr>
+                                <tr><td>Germany</td><td>~100,000</td></tr>
+                                <tr><td>Mexico</td><td>~100,000</td></tr>
+                                <tr><td>Syria</td><td>~100,000</td></tr>
+                                <tr><td>Canada</td><td>~71,000</td></tr>
+                                <tr><td>Russia</td><td>~45,000+</td></tr>
+                                <tr><td>Australia</td><td>~38,000</td></tr>
+                                <tr><td>Spain</td><td>~20,000</td></tr>
+                                <tr><td colspan="2" style="font-weight: 800; background: #f3f4f6; color: #6366F1;">Total: ~2,124,000</td></tr>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="stats-visuals">
                         <div class="stats-chart-container">
-                            <img src="{{ url_for('static', filename='images/estimate.png') }}"
-                                alt="Missing Children Statistics" class="stats-img">
+                            <img src="{{ url_for('static', filename='images/estimate.png') }}" alt="Missing Children Statistics" class="stats-img">
                         </div>
 
                         <div class="breakdown-card">
-                            <h3 style="display: flex; align-items: center; margin-bottom: 15px; color: #111827;">
-                                <span
-                                    style="background: rgba(99, 102, 241, 0.1); color: #6366F1; padding: 8px; border-radius: 8px; margin-right: 12px; display: flex;">
+                            <h3 style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4);">
+                                <span style="background: rgba(99, 102, 241, 0.1); color: #6366F1; padding: var(--space-2); border-radius: var(--radius); display: flex;">
                                     <i class="material-icons">child_care</i>
                                 </span>
                                 Child Impact Breakdown
                             </h3>
-                            <p style="color: #4b5563; margin-bottom: 20px; line-height: 1.6;">Among the <strong>~2.1
-                                    million</strong> total missing persons reports:</p>
-                            <ul style="list-style: none; padding: 0; margin: 0;">
-                                <li style="margin-bottom: 16px; display: flex; align-items: flex-start;">
-                                    <i class="material-icons"
-                                        style="color: #6366F1; font-size: 20px; margin-right: 12px; margin-top: 2px;">check_circle</i>
-                                    <span style="color: #374151;"><strong>850,000 - 1,000,000</strong> are children
-                                        (under 18).</span>
+                            <p style="margin-bottom: var(--space-4);">Among the <strong>~2.1 million</strong> total missing persons reports:</p>
+                            <ul class="feature-list">
+                                <li class="feature-item">
+                                    <i class="material-icons" style="color: var(--blue); font-size: 1.25rem; padding: var(--space-2);">check_circle</i>
+                                    <span><strong>850,000 - 1,000,000</strong> are children (under 18).</span>
                                 </li>
-                                <li style="margin-bottom: 16px; display: flex; align-items: flex-start;">
-                                    <i class="material-icons"
-                                        style="color: #6366F1; font-size: 20px; margin-right: 12px; margin-top: 2px;">pie_chart</i>
-                                    <span style="color: #374151;">Adolescents (12-17) make up <strong>60–80%</strong> of
-                                        these cases.</span>
+                                <li class="feature-item">
+                                    <i class="material-icons" style="color: var(--blue); font-size: 1.25rem; padding: var(--space-2);">pie_chart</i>
+                                    <span>Adolescents (12-17) make up <strong>60-80%</strong> of these cases.</span>
                                 </li>
-                                <li style="display: flex; align-items: flex-start;">
-                                    <i class="material-icons"
-                                        style="color: #6366F1; font-size: 20px; margin-right: 12px; margin-top: 2px;">warning</i>
-                                    <span style="color: #374151;">Roughly <strong>500,000 - 600,000</strong> reports
-                                        involve children aged 12–17.</span>
+                                <li class="feature-item">
+                                    <i class="material-icons" style="color: var(--blue); font-size: 1.25rem; padding: var(--space-2);">warning</i>
+                                    <span>Roughly <strong>500,000 - 600,000</strong> reports involve children aged 12-17.</span>
                                 </li>
                             </ul>
                         </div>
@@ -274,63 +194,42 @@
                 </div>
             </section>
 
-            <!-- How It Works Section with question.png 
-             in Step 2 -->
-            <section id="how-it-works" class="content-section bg-light"
-                style="padding: var(--spacing-lg) 0; border-radius: var(--radius-lg);">
+            <section id="how-it-works" class="content-section bg-light" style="border-radius: var(--radius);">
                 <div class="section-grid">
                     <div class="section-image">
-                        <img src="{{ url_for('static', filename='images/question.png') }}"
-                            alt="AI encoding pipeline visualization" loading="lazy" class="process-img">
+                        <img src="{{ url_for('static', filename='images/question.png') }}" alt="AI encoding pipeline visualization" loading="lazy">
                     </div>
                     <div class="section-text">
                         <span class="section-label">Process Workflow</span>
                         <h2>How ReuniteAI Works</h2>
-                        <p>Our secure, privacy-preserving identification pipeline explained step-by-step, for user
-                            convinence and for user understadability</p>
+                        <p>Our secure, privacy-preserving identification pipeline explained step-by-step.</p>
 
                         <div class="tech-stack">
                             <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">cloud_upload</i>
-                                </div>
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">cloud_upload</i></div>
                                 <h3>01. Secure Upload</h3>
-                                <p>User uploads an image. The file is encrypted in transit and processed in volatile
-                                    memory, ensuring data privacy.</p>
+                                <p>User uploads an image. The file is encrypted in transit and processed in volatile memory, ensuring data privacy.</p>
                             </div>
-
-                            <div class="tech-item" style="margin-right: 15px;">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">face</i>
-                                </div>
-                                <h3>02. Feature Extraction</h3>
-                                <p>The AI model detects the face and generates a 128-dimensional vector embedding
-                                    representing unique facial landmarks.</p>
-                            </div>
-
                             <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">compare_arrows</i>
-                                </div>
-                                <h3>03. Vector Matching</h3>
-                                <p>The system computes Euclidean distances between the uploaded vector and stored
-                                    embeddings to find potential matches.</p>
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">face</i></div>
+                                <h3>02. Feature Extraction</h3>
+                                <p>The AI model detects the face and generates a 128-dimensional vector embedding representing unique facial landmarks.</p>
                             </div>
-
-                            <div class="tech-item" style="margin-right: 15px;">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">verified</i>
-                                </div>
+                            <div class="tech-item">
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">compare_arrows</i></div>
+                                <h3>03. Vector Matching</h3>
+                                <p>The system computes Euclidean distances between the uploaded vector and stored embeddings to find potential matches.</p>
+                            </div>
+                            <div class="tech-item">
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">verified</i></div>
                                 <h3>04. Verification</h3>
-                                <p>Matches above the confidence threshold are presented. Users can then view details or
-                                    register a new case if no match is found.</p>
+                                <p>Matches above the confidence threshold are presented. Users can then view details or register a new case if no match is found.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Why It Matters Section with 7.png -->
             <section id="impact" class="content-section">
                 <div class="section-title-center">
                     <span class="section-label">Impact</span>
@@ -338,17 +237,11 @@
                 </div>
                 <div class="impact-content">
                     <div class="impact-image">
-                        <img src="{{ url_for('static', filename='images/impact.jpg') }}" class="impact-full-img"
-                            alt="Illustration representing the human impact of reuniting families through technology"
-                            loading="lazy">
+                        <img src="{{ url_for('static', filename='images/impact.jpg') }}" alt="Illustration representing the human impact of reuniting families through technology" loading="lazy">
                     </div>
                     <div class="impact-text">
-                        <p class="lead">Every year, thousands of families face the anguish of separation. Missing
-                            persons cases often go cold due to limited resources, jurisdictional barriers, and the sheer
-                            scale of manual identification efforts.</p>
-                        <p>ReuniteAI bridges this gap by democratizing access to advanced facial recognition technology.
-                            We empower families, NGOs, and communities with tools that were once available only to
-                            well-funded institutions.</p>
+                        <p class="lead">Every year, thousands of families face the anguish of separation. Missing persons cases often go cold due to limited resources, jurisdictional barriers, and the sheer scale of manual identification efforts.</p>
+                        <p>ReuniteAI bridges this gap by democratizing access to advanced facial recognition technology. We empower families, NGOs, and communities with tools that were once available only to well-funded institutions.</p>
                         <div class="impact-stats">
                             <div class="stat-item">
                                 <h3>600,000+</h3>
@@ -363,13 +256,11 @@
                                 <p>Technology accessible to communities worldwide</p>
                             </div>
                         </div>
-                        <p><strong>Our mission is simple:</strong> Use AI to amplify human compassion, not replace it.
-                            Every match is a potential homecoming, every search is hope renewed.</p>
+                        <p><strong>Our mission is simple:</strong> Use AI to amplify human compassion, not replace it. Every match is a potential homecoming, every search is hope renewed.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Audience Section with 8.png -->
             <section id="audience" class="content-section bg-light">
                 <div class="section-title-center">
                     <span class="section-label">Community</span>
@@ -377,95 +268,65 @@
                 </div>
                 <div class="audience-grid">
                     <div class="audience-card">
-                        <div class="audience-icon">
-                            <i class="material-icons" aria-hidden="true">groups</i>
-                        </div>
+                        <div class="audience-icon"><i class="material-icons" aria-hidden="true">groups</i></div>
                         <h3>Families & Loved Ones</h3>
-                        <p>Search for missing relatives or report cases to our database. Access powerful identification
-                            tools without technical expertise or financial barriers.</p>
+                        <p>Search for missing relatives or report cases to our database. Access powerful identification tools without technical expertise or financial barriers.</p>
                     </div>
                     <div class="audience-card">
-                        <div class="audience-icon">
-                            <i class="material-icons" aria-hidden="true">volunteer_activism</i>
-                        </div>
+                        <div class="audience-icon"><i class="material-icons" aria-hidden="true">volunteer_activism</i></div>
                         <h3>NGOs & Humanitarian Groups</h3>
-                        <p>Partner with us to integrate AI-assisted identification into your existing support
-                            frameworks. Bulk reporting and case management features available upon collaboration.</p>
+                        <p>Partner with us to integrate AI-assisted identification into your existing support frameworks. Bulk reporting and case management features available upon collaboration.</p>
                     </div>
                     <div class="audience-card">
-                        <div class="audience-icon">
-                            <i class="material-icons" aria-hidden="true">school</i>
-                        </div>
+                        <div class="audience-icon"><i class="material-icons" aria-hidden="true">school</i></div>
                         <h3>Researchers & Academics</h3>
-                        <p>Access our anonymized datasets and methodologies for further AI ethics research. Contribute
-                            to the ongoing development of responsible facial recognition systems.</p>
+                        <p>Access our anonymized datasets and methodologies for further AI ethics research. Contribute to the ongoing development of responsible facial recognition systems.</p>
                     </div>
                     <div class="audience-card">
-                        <div class="audience-icon">
-                            <i class="material-icons" aria-hidden="true">public</i>
-                        </div>
+                        <div class="audience-icon"><i class="material-icons" aria-hidden="true">public</i></div>
                         <h3>Future Integration Partners</h3>
-                        <p>We envision collaboration with law enforcement, international databases, and governmental
-                            agencies always maintaining our ethical standards and consent-based approach.</p>
+                        <p>We envision collaboration with law enforcement, international databases, and governmental agencies always maintaining our ethical standards and consent-based approach.</p>
                     </div>
                     <div class="audience-card">
-                        <div class="audience-icon">
-                            <i class="material-icons" aria-hidden="true">health_and_safety</i>
-                        </div>
+                        <div class="audience-icon"><i class="material-icons" aria-hidden="true">health_and_safety</i></div>
                         <h3>Social Services</h3>
-                        <p>Enhance case management for vulnerable populations by leveraging AI to identify missing
-                            individuals quickly and accurately.</p>
+                        <p>Enhance case management for vulnerable populations by leveraging AI to identify missing individuals quickly and accurately.</p>
                     </div>
                     <div class="audience-card">
-                        <div class="audience-icon">
-                            <i class="material-icons" aria-hidden="true">newspaper</i>
-                        </div>
+                        <div class="audience-icon"><i class="material-icons" aria-hidden="true">newspaper</i></div>
                         <h3>Journalists & Media</h3>
-                        <p>Access verified data and responsible reporting tools to help spread awareness about missing
-                            person cases ethically.</p>
+                        <p>Access verified data and responsible reporting tools to help spread awareness about missing person cases ethically.</p>
                     </div>
                 </div>
             </section>
 
-            <section id="academic-purpose" class="content-section bg-light rounded-lg padded-section">
+            <section id="academic-purpose" class="content-section">
                 <div class="section-grid">
                     <div class="section-image">
-                        <img src="{{ url_for('static', filename='images/security.svg') }}"
-                            alt="Graduation cap symbolizing academic research and ethical AI development"
-                            loading="lazy">
+                        <img src="{{ url_for('static', filename='images/security.svg') }}" alt="Graduation cap symbolizing academic research and ethical AI development" loading="lazy">
                     </div>
                     <div class="section-text">
                         <span class="section-label">Our Foundation</span>
                         <h2>Built on Academic Ethics & Research Integrity</h2>
-                        <p>ReuniteAI is a non-commercial research initiative developed at SNPSU. Every aspect of our
-                            platform adheres to strict ethical guidelines, ensuring that AI serves humanity without
-                            compromising privacy or dignity.</p>
+                        <p>ReuniteAI is a non-commercial research initiative developed at SNPSU. Every aspect of our platform adheres to strict ethical guidelines, ensuring that AI serves humanity without compromising privacy or dignity.</p>
                         <div class="tech-stack">
                             <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">account_balance</i>
-                                </div>
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">account_balance</i></div>
                                 <h3>Academic Purpose</h3>
                                 <p>Research-only platform with no commercial interests</p>
                             </div>
-                            <div class="tech-item" style="margin-right: 15px;">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">verified_user</i>
-                                </div>
+                            <div class="tech-item">
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">verified_user</i></div>
                                 <h3>Consent-Based</h3>
                                 <p>All data collection requires explicit informed consent</p>
                             </div>
                             <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">block</i>
-                                </div>
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">block</i></div>
                                 <h3>No Third-Party Sharing</h3>
                                 <p>Data never sold or shared with advertisers</p>
                             </div>
-                            <div class="tech-item" style="margin-right: 15px;">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">balance</i>
-                                </div>
+                            <div class="tech-item">
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">balance</i></div>
                                 <h3>Ethical AI Principles</h3>
                                 <p>Fairness, transparency, and accountability in every decision</p>
                             </div>
@@ -474,54 +335,41 @@
                 </div>
             </section>
 
-            <!-- System Design Section with ai-man -->
             <section id="system-design" class="content-section">
                 <div class="section-grid">
                     <div class="section-text">
                         <span class="section-label">Technical Transparency</span>
                         <h2>Open Architecture & Reproducible Research</h2>
-                        <p>We believe in transparency. Our system architecture is documented, our methodologies are
-                            reproducible, and our approach is grounded in established computer vision research.</p>
+                        <p>We believe in transparency. Our system architecture is documented, our methodologies are reproducible, and our approach is grounded in established computer vision research.</p>
                         <div class="tech-stack">
                             <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">code</i>
-                                </div>
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">code</i></div>
                                 <h3>Python Ecosystem</h3>
                                 <p>Built with Python, leveraging TensorFlow and scikit-learn for robust ML pipelines</p>
                             </div>
                             <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">account_tree</i>
-                                </div>
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">account_tree</i></div>
                                 <h3>Machine Learning Models</h3>
                                 <p>FaceNet-inspired architecture for facial encoding with cosine similarity matching</p>
                             </div>
                             <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">storage</i>
-                                </div>
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">storage</i></div>
                                 <h3>NoSQL Database</h3>
                                 <p>Scalable document storage optimized for vector similarity searches</p>
                             </div>
                             <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="material-icons" aria-hidden="true">call_split</i>
-                                </div>
+                                <div class="tech-icon"><i class="material-icons" aria-hidden="true">call_split</i></div>
                                 <h3>Reproducibility</h3>
                                 <p>Version-controlled codebase with documented experiments and evaluation metrics</p>
                             </div>
                         </div>
                     </div>
                     <div class="section-image">
-                        <img src="{{ url_for('static', filename='images/ai-man.svg') }}" class="ai-man-img"
-                            alt="Developer working with system workflow showing technical architecture and AI pipeline"
-                            loading="lazy">
+                        <img src="{{ url_for('static', filename='images/ai-man.svg') }}" alt="Developer working with system workflow showing technical architecture and AI pipeline" loading="lazy">
                     </div>
                 </div>
             </section>
 
-            <!-- Why This Logo Section -->
             <section id="why-this-logo" class="content-section">
                 <div class="section-title-center">
                     <span class="section-label">Design Philosophy</span>
@@ -529,55 +377,43 @@
                 </div>
                 <div class="section-grid">
                     <div class="section-text">
-                        <p class="lead">The ReuniteAI logo was intentionally designed using a purple color palette and a
-                            symmetrical, circular pattern to represent trust, intelligence, and compassion working
-                            together.</p>
-
-                        <div class="feature-list my-20">
+                        <p class="lead">The ReuniteAI logo was intentionally designed using a purple color palette and a symmetrical, circular pattern to represent trust, intelligence, and compassion working together.</p>
+                        <div class="feature-list">
                             <div class="feature-item">
-                                <i class="material-icons text-purple" aria-hidden="true">palette</i>
+                                <i class="material-icons" aria-hidden="true">palette</i>
                                 <div>
                                     <h3>Wisdom & Ethics</h3>
-                                    <p>Purple reflects wisdom, sensitivity, and thoughtful innovation, aligning with the
-                                        ethical responsibility required when handling human-centric data.</p>
+                                    <p>Purple reflects wisdom, sensitivity, and thoughtful innovation, aligning with the ethical responsibility required when handling human-centric data.</p>
                                 </div>
                             </div>
                             <div class="feature-item">
-                                <i class="material-icons text-purple" aria-hidden="true">all_inclusive</i>
+                                <i class="material-icons" aria-hidden="true">all_inclusive</i>
                                 <div>
                                     <h3>Connection</h3>
-                                    <p>The interconnected circular forms symbolize individuals, families, and the AI
-                                        system converging through a central point of connection.</p>
+                                    <p>The interconnected circular forms symbolize individuals, families, and the AI system converging through a central point of connection.</p>
                                 </div>
                             </div>
                             <div class="feature-item">
-                                <i class="material-icons text-purple" aria-hidden="true">favorite</i>
+                                <i class="material-icons" aria-hidden="true">favorite</i>
                                 <div>
                                     <h3>Emotional Safety</h3>
-                                    <p>The smooth geometry conveys care, inclusivity, and emotional safety rather than
-                                        technical coldness.</p>
+                                    <p>The smooth geometry conveys care, inclusivity, and emotional safety rather than technical coldness.</p>
                                 </div>
                             </div>
                         </div>
-                        <p>Overall, the logo visually reinforces ReuniteAI’s mission of reuniting people through
-                            responsible and empathetic artificial intelligence.</p>
+                        <p>Overall, the logo visually reinforces ReuniteAI's mission of reuniting people through responsible and empathetic artificial intelligence.</p>
                     </div>
-                    <div class="section-image design-image-container">
-                        <div class="design-bg-circle">
-                        </div>
-                        <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="ReuniteAI Logo Design"
-                            class="design-logo-img">
+                    <div class="section-image">
+                        <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="ReuniteAI Logo Design" style="max-width: 200px; margin: 0 auto;">
                     </div>
                 </div>
             </section>
 
-            <!-- Call to Action -->
             <section class="cta-section">
                 <div class="cta-content">
                     <span class="academic-badge">Join the Mission</span>
                     <h2>Ready to Make a Difference?</h2>
-                    <p>Whether you're searching for someone, reporting a case, or contributing to ethical AI research,
-                        your participation helps reunite families.</p>
+                    <p>Whether you're searching for someone, reporting a case, or contributing to ethical AI research, your participation helps reunite families.</p>
                     <div class="cta-buttons">
                         <a href="/upload" class="btn-cta primary" aria-label="Start verification process now">
                             <i class="material-icons" aria-hidden="true">search</i> Verify a Person
@@ -592,7 +428,6 @@
                 </div>
             </section>
 
-            <!-- FAQ Section -->
             <section id="faq" class="content-section">
                 <div class="section-title-center">
                     <span class="section-label">Support</span>
@@ -601,61 +436,41 @@
                 <div class="faq-container">
                     <details>
                         <summary>Is uploaded data safe?</summary>
-                        <div class="faq-answer">Yes. All data is encrypted both in transit (TLS 1.3) and at rest
-                            (AES-256). We use industry-standard security protocols to ensure that sensitive information
-                            remains private and is only used for matching purposes. Raw images are never stored in our
-                            encrypted embeddings.</div>
+                        <div class="faq-answer">Yes. All data is encrypted both in transit (TLS 1.3) and at rest (AES-256). We use industry-standard security protocols to ensure that sensitive information remains private and is only used for matching purposes. Raw images are never stored in our encrypted embeddings.</div>
                     </details>
                     <details>
                         <summary>Who can access the photos?</summary>
-                        <div class="faq-answer">Only authorized researchers and system administrators with multi-factor
-                            authentication have access to the encrypted data. The public cannot browse the database;
-                            they can only perform specific verification searches against their own uploaded images.
-                        </div>
+                        <div class="faq-answer">Only authorized researchers and system administrators with multi-factor authentication have access to the encrypted data. The public cannot browse the database; they can only perform specific verification searches against their own uploaded images.</div>
                     </details>
                     <details>
                         <summary>What if no match is found?</summary>
-                        <div class="faq-answer">If no match is found immediately, the data remains securely stored (with
-                            your explicit consent) to be cross-referenced with future reports. You can request deletion
-                            of your data at any time through your account settings.</div>
+                        <div class="faq-answer">If no match is found immediately, the data remains securely stored (with your explicit consent) to be cross-referenced with future reports. You can request deletion of your data at any time through your account settings.</div>
                     </details>
                     <details>
                         <summary>Is this linked to police databases?</summary>
-                        <div class="faq-answer">No. ReuniteAI is an independent academic research project. We do not
-                            have direct integration with law enforcement databases at this stage. However, we are open
-                            to ethical partnerships that respect privacy and consent.</div>
+                        <div class="faq-answer">No. ReuniteAI is an independent academic research project. We do not have direct integration with law enforcement databases at this stage. However, we are open to ethical partnerships that respect privacy and consent.</div>
                     </details>
                     <details>
                         <summary>Is this free to use?</summary>
-                        <div class="faq-answer">Yes, ReuniteAI is completely free. It is a social good initiative
-                            developed for academic research and community support. We have no commercial interests and
-                            will never charge for basic identification services.</div>
+                        <div class="faq-answer">Yes, ReuniteAI is completely free. It is a social good initiative developed for academic research and community support. We have no commercial interests and will never charge for basic identification services.</div>
                     </details>
                     <details>
                         <summary>Can NGOs use this platform?</summary>
-                        <div class="faq-answer">Absolutely. We welcome collaboration with NGOs and humanitarian
-                            organizations. Please contact us at research@reuniteai.edu for partnership opportunities,
-                            including bulk reporting features and integration support.</div>
+                        <div class="faq-answer">Absolutely. We welcome collaboration with NGOs and humanitarian organizations. Please contact us at research@reuniteai.edu for partnership opportunities, including bulk reporting features and integration support.</div>
                     </details>
                     <details>
                         <summary>How accurate is the facial recognition?</summary>
-                        <div class="faq-answer">In controlled laboratory settings, our system achieves 98% accuracy.
-                            However, real-world performance depends on image quality, lighting, aging, and other
-                            factors. All matches undergo manual review before contact information is released.</div>
+                        <div class="faq-answer">In controlled laboratory settings, our system achieves 98% accuracy. However, real-world performance depends on image quality, lighting, aging, and other factors. All matches undergo manual review before contact information is released.</div>
                     </details>
                     <details>
                         <summary>What about bias in facial recognition?</summary>
-                        <div class="faq-answer">We acknowledge that facial recognition systems can exhibit bias. Our
-                            models are trained on diverse, internationally representative datasets, and we continuously
-                            evaluate performance across demographic groups. Bias mitigation is an active area of our
-                            research.</div>
+                        <div class="faq-answer">We acknowledge that facial recognition systems can exhibit bias. Our models are trained on diverse, internationally representative datasets, and we continuously evaluate performance across demographic groups. Bias mitigation is an active area of our research.</div>
                     </details>
                 </div>
             </section>
         </div>
     </main>
 
-    <!-- Footer -->
     {% include 'footer.html' %}
 
     <button id="backToTop" class="back-to-top" aria-label="Back to top">
@@ -663,33 +478,25 @@
     </button>
 
     <script>
-        // Force page to start at the top on refresh
-        if (history.scrollRestoration) {
-            history.scrollRestoration = 'manual';
+    if (history.scrollRestoration) {
+        history.scrollRestoration = 'manual';
+    }
+    if (window.location.hash) {
+        history.replaceState(null, null, window.location.pathname + window.location.search);
+    }
+    window.scrollTo(0, 0);
+
+    var backToTopButton = document.getElementById('backToTop');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            backToTopButton.classList.add('visible');
+        } else {
+            backToTopButton.classList.remove('visible');
         }
-        // Remove hash to prevent jumping to sections on refresh
-        if (window.location.hash) {
-            history.replaceState(null, null, window.location.pathname + window.location.search);
-        }
-        window.scrollTo(0, 0);
-
-        // Back to Top Button Logic
-        const backToTopButton = document.getElementById('backToTop');
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopButton.classList.add('visible');
-            } else {
-                backToTopButton.classList.remove('visible');
-            }
-        });
-
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
+    });
+    backToTopButton.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
     </script>
 </body>
 
