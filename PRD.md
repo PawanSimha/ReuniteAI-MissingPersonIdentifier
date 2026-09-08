@@ -3,8 +3,9 @@
 | Field | Detail |
 |-------|--------|
 | **Project Name** | ReuniteAI — AI-Powered Missing Person Identification |
-| **Target Release** | Q3 2025 |
-| **Status** | In Review |
+| **Version** | v1.0.0 |
+| **Target Release** | 2026 |
+| **Status** | Implemented / Active Development |
 | **Author** | Pawan Simha R |
 
 ---
@@ -39,7 +40,7 @@ Every year, **thousands of individuals go missing**. Traditional identification 
 | **Match Latency** | <2 seconds per upload (encoding + batch search) | Server-side timing instrumentation |
 | **Case Resolution Rate** | 30% of reported missing persons matched within 90 days | Database case-status audit (`active` → `matched`) |
 | **User Onboarding** | 1,000+ registered users within 6 months of GA | MongoDB user collection count |
-| **System Uptime** | 99.5% availability | Flask health-check endpoint / uptime monitoring |
+| **System Uptime** | 99.5% availability | `GET /health` liveness endpoint / uptime monitoring |
 
 ---
 
@@ -80,13 +81,26 @@ Every year, **thousands of individuals go missing**. Traditional identification 
 
 | Constraint | Specification |
 |------------|--------------|
-| **Face Detection** | HOG + CNN cascade via `face_recognition` (dlib). Minimum face size: 80×80 pixels |
+| **Face Detection** | HOG + CNN cascade via `face_recognition` (dlib 19.24.2). Minimum face size: 80×80 pixels |
 | **Face Encoding** | Deep Residual Network → 128-d float vector. Must produce consistent encodings (±0.02 variance) across lighting conditions |
 | **Matching Algorithm** | NumPy-vectorized Euclidean distance. Threshold: **<0.6** for a positive match |
 | **Latency Budget** | Full pipeline (load → detect → encode → match) must complete in **<2,000 ms** for a single query against 10,000 stored encodings |
-| **Data Security** | Passwords hashed with **bcrypt** (rounds=12). Sessions signed with `SECRET_KEY` via Flask. No plaintext credentials stored |
-| **Database** | MongoDB 4.4+ (`pymongo`). Face encodings stored as BSON arrays. Index on `face_encoding` for batch scan efficiency |
+| **Data Security** | Passwords hashed with **bcrypt 4.0.1** (pin required for passlib 1.7.4). Sessions signed with `SECRET_KEY` via Flask. No plaintext credentials stored |
+| **Runtime** | Python **3.11**, Flask 3.0.0, served by **gunicorn 23** (`0.0.0.0:8000` in containers) |
+| **Database** | MongoDB **7** (`pymongo`). Face encodings stored as BSON arrays. Index on `face_encoding` for batch scan efficiency |
 | **Image Storage** | Local filesystem partitioned into `images/temp/` (staging) and `images/database/` (permanent). Max upload size: **16 MB** |
+
+### Containerization & Delivery (Non-Functional)
+
+| Constraint | Specification |
+|------------|--------------|
+| **Container Image** | Multi-stage `Dockerfile` — dlib compiled once in a builder stage; runtime image is slim and runs as non-root `appuser` |
+| **Orchestration** | `docker-compose.yml` runs `web` + `db` (`mongo:7`) with healthchecks; `web` starts only after `db` is healthy; named volume for Mongo data, `./images` bind-mounted for uploads |
+| **Port Publishing** | Host `5000` → container `8000` (clickable port link in Docker Desktop) |
+| **Observability** | `GET /health` liveness probe (HTTP 200 = app + DB ok, 503 otherwise); backs Docker `HEALTHCHECK` and orchestration readiness |
+| **Registry** | Image published to **GHCR** (`ghcr.io/pawansimha/reuniteai-missingpersonidentifier`) via GitHub Actions |
+| **CI/CD** | GitHub Actions: `ci.yml` (unit tests + MongoDB service container + compose validation), `docker.yml` (BuildKit build → GHCR push → Trivy vulnerability scan → SARIF upload to GitHub Advanced Security) |
+| **Environment** | All config via environment variables (`SECRET_KEY`, `MONGO_URI`, `DB_NAME`, `ADMIN_*`, `PORT`, `FLASK_DEBUG`); `.env` never committed |
 
 ---
 
@@ -125,4 +139,4 @@ Every year, **thousands of individuals go missing**. Traditional identification 
 |-------|------------|-----------------|
 | **Alpha (Weeks 1–2)** | Internal testing with synthetic data. Validate pipeline latency and encoding accuracy against a labeled test set | Match latency <2s; precision >95% on test set |
 | **Beta (Weeks 3–6)** | Onboard 3–5 NGOs / volunteer groups. Collect real-world uploads and match feedback. Tune distance threshold if needed | 50+ missing-person records; 10+ successful match confirmations |
-| **GA (Week 7+)** | Public launch. Deploy to production environment. Publish on GitHub and social channels. Monitor dashboard metrics | 1,000 registered users; 30% case-resolution rate within 90 days of GA |
+| **GA (Week 7+)** | Public launch. Production deployment via the containerized stack (GHCR image + docker-compose) with the marketing site on GitHub Pages. Publish on GitHub and social channels. Monitor dashboard metrics | 1,000 registered users; 30% case-resolution rate within 90 days of GA |
