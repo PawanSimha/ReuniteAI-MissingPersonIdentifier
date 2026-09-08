@@ -40,6 +40,11 @@ PRD.md
 Procfile
 sitemap.xml
 robots.txt
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+.editorconfig
+.env.example
 
 # Media / packaging
 ReuniteAi - Icon.ico

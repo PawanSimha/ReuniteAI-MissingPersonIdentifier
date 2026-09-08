@@ -13,6 +13,7 @@ env/
 .env
 .env.local
 .env.production
+.env.docker
 
 # Distribution / Packaging
 build/
@@ -37,7 +38,7 @@ wheels/
 db_dump.txt
 *.dump
 
-# IDE/Editor
+# IDE / Editor
 .vscode/
 .idea/
 *.swp
@@ -60,10 +61,12 @@ tmp/
 # Reports (not source)
 Synopsis & Reports/
 
-# Test cache
+# Test & lint caches
 .pytest_cache/
 htmlcov/
 .coverage
+.mypy_cache/
+.ruff_cache/
 
 # Logs
 *.log
