@@ -1,0 +1,46 @@
+name: reuniteai
+
+services:
+  db:
+    image: mongo:7
+    container_name: reuniteai-db
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: reuniteai_db
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/pawansimha/reuniteai-missingpersonidentifier:latest
+    container_name: reuniteai-web
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MONGO_URI: mongodb://db:27017/
+      PORT: '8000'
+    ports:
+      - "5000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./images:/app/images
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3); sys.exit(0)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  mongo-data:

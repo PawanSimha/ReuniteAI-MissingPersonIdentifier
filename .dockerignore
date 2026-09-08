@@ -1,0 +1,49 @@
+# Git / VCS
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual envs
+venv/
+env/
+.venv/
+
+# Secrets
+.env
+.env.local
+.env.production
+.env.docker
+
+# Local data (mounted as volume at runtime)
+images/database/
+images/temp/
+db_dump.txt
+desktop.ini
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*~
+
+# CI / docs (not needed inside image)
+.github/
+tests/
+PRD.md
+Procfile
+sitemap.xml
+robots.txt
+
+# Media / packaging
+ReuniteAi - Icon.ico
+ReuniteAi.webp
+build/
+dist/
+*.log
