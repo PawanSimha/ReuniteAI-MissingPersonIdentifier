@@ -1,3 +1,17 @@
+# ReuniteAI — full-stack Docker Compose
+# ============================================================
+# Services:
+#   db  : MongoDB 7 with a healthcheck + named volume (data survives restarts).
+#   web : gunicorn-served Flask app; starts ONLY after db is healthy.
+#
+# Networking: host port 5000 -> container 8000. The clickable Docker Desktop
+# port link opens http://localhost:5000 once the container is healthy.
+#
+# Environment: values come from /env_file/.env, with MONGO_URI overridden to
+# the internal db hostname and PORT forced to 8000 inside the container.
+#
+# Data: MongoDB data persists in the mongo-data named volume; uploaded images
+# persist via the ./images bind mount.
 name: reuniteai
 
 services:
@@ -23,6 +37,8 @@ services:
     image: ghcr.io/pawansimha/reuniteai-missingpersonidentifier:latest
     container_name: reuniteai-web
     restart: unless-stopped
+    # Run containers with an init (PID 1) so orphaned zombie processes are reaped
+    init: true
     env_file:
       - .env
     environment:

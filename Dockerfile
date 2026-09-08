@@ -34,6 +34,9 @@ RUN pip install --no-cache-dir --prefix=/opt/venv --no-build-isolation \
 # ============================================================
 FROM python:3.11-slim AS runtime
 
+# PYTHONPATH must include the pip --prefix target (/opt/venv/lib/python3.11/
+# site-packages) so Python 3.11 can locate site-packages copied in from the
+# builder stage; /app makes the application package importable.
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app:/opt/venv/lib/python3.11/site-packages \
@@ -68,6 +71,12 @@ COPY static/ ./static/
 COPY requirements.txt .
 COPY LICENSE ./
 RUN mkdir -p /app/images/temp /app/images/database && chown -R appuser:appuser /app/images
+
+# OCI image metadata (visible on the GHCR package page / via docker inspect)
+LABEL org.opencontainers.image.title="ReuniteAI" \
+      org.opencontainers.image.description="AI-powered missing person identification web application (Flask + dlib face-recognition + MongoDB)" \
+      org.opencontainers.image.source="https://github.com/PawanSimha/ReuniteAI-MissingPersonIdentifier" \
+      org.opencontainers.image.licenses="GPL-3.0"
 
 USER appuser
 
