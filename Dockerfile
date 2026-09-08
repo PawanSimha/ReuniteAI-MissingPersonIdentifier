@@ -25,8 +25,11 @@ WORKDIR /build
 # Install Python dependencies. --no-build-isolation forces builds to use the
 # apt-provided CMake (3.25) instead of a pip-fetched bleeding-edge one that
 # rejects dlib's bundled pybind11 (known CMake policy incompatibility).
+# setuptools is pinned <82 because face_recognition_models imports
+# pkg_resources, which setuptools removed in v82.
 COPY requirements.txt .
-RUN pip install --no-cache-dir --prefix=/opt/venv --no-build-isolation \
+RUN pip install --upgrade "setuptools<82" wheel \
+    && pip install --no-cache-dir --prefix=/opt/venv --no-build-isolation \
       --retries 10 --timeout 120 -r requirements.txt
 
 # ============================================================
