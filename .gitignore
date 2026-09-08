@@ -57,6 +57,7 @@ images/database/
 # Junk/Backup
 static/images/bin/
 tmp/
+temp/
 
 # Reports (not source)
 Synopsis & Reports/
