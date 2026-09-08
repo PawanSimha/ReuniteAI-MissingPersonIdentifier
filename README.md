@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/PawanSimha/ReuniteAi/main/static/images/favicon.png" width="140" alt="ReuniteAI Logo">
+  <img src="https://raw.githubusercontent.com/PawanSimha/ReuniteAI-MissingPersonIdentifier/main/static/images/favicon.png" width="140" alt="ReuniteAI Logo">
 </p>
 
 <h1 align="center">ReuniteAI</h1>
@@ -25,7 +25,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/PawanSimha/ReuniteAi/main/ReuniteAi.webp" alt="Biometric base missing person identification" width="800" style="border-radius: 12px;" />
+  <img src="https://raw.githubusercontent.com/PawanSimha/ReuniteAI-MissingPersonIdentifier/main/ReuniteAi.webp" alt="Biometric base missing person identification" width="800" style="border-radius: 12px;" />
 </p>
 
 ---
@@ -85,11 +85,14 @@ flowchart LR
 | **Face Detection** | HOG + CNN via `face_recognition` (dlib) |
 | **Face Encoding** | Deep Residual Network → 128-d vector |
 | **Matching Engine** | NumPy vectorized Euclidean distance |
-| **Database** | MongoDB 4.4+ (`pymongo`) |
+| **Database** | MongoDB 7 (`pymongo`) |
 | **Auth** | `passlib[bcrypt]`, Flask session cookies |
 | **Image Processing** | OpenCV 4.8, `face_recognition` |
 | **Frontend** | HTML5, CSS3, Vanilla JS |
 | **Environment** | `python-dotenv`, `FLASK_DEBUG` flag |
+| **Containerization** | Dockerfile (multi-stage), docker-compose (web + MongoDB) |
+| **Registry** | GitHub Container Registry (`ghcr.io/pawansimha/reuniteai-missingpersonidentifier`) |
+| **CI/CD** | GitHub Actions — `ci.yml` (tests), `docker.yml` (image + Trivy scan) |
 | **Testing** | `unittest` |
 
 ---
@@ -103,12 +106,21 @@ ReuniteAI/
 ├── Dockerfile                      # Multi-stage container image
 ├── docker-compose.yml              # Full-stack orchestration (web + MongoDB)
 ├── .dockerignore                   # Build context exclusions
+├── .gitattributes                  # Git line-ending / binary rules
+├── .editorconfig                   # Editor style conventions
 ├── .env.example                    # Environment variable template
 ├── LICENSE                         # GPL v3
+├── PRD.md                          # Product requirements
+├── CHANGELOG.md                    # Versioned release notes
+├── CONTRIBUTING.md                 # Contribution & commit conventions
+├── Procfile                        # Heroku-style process definition
+├── sitemap.xml                     # SEO sitemap (GitHub Pages / marketing)
+├── robots.txt                      # Crawler directives
 │
 ├── .github/workflows/              # GitHub Actions
 │   ├── ci.yml                      # Unit tests (Python + MongoDB)
-│   └── docker.yml                  # Build & push image to GHCR
+│   ├── docker.yml                  # Build & push image to GHCR
+│   └── static.yml                  # Deploy marketing site to GitHub Pages
 │
 ├── python_files/                   # Core logic modules
 │   ├── auth_manager.py             # Signup/login, admin init, bcrypt hashing
@@ -163,8 +175,8 @@ ReuniteAI/
 
 ```bash
 # 1. Clone
-git clone https://github.com/PawanSimha/ReuniteAI.git
-cd ReuniteAI
+git clone https://github.com/PawanSimha/ReuniteAI-MissingPersonIdentifier.git
+cd ReuniteAI-MissingPersonIdentifier
 
 # 2. Virtual environment
 python -m venv venv
@@ -183,7 +195,7 @@ copy .env.example .env         # Windows
 python app.py
 ```
 
-Open **`http://127.0.0.1:5000`** in your browser.
+The dev server binds `0.0.0.0` on `PORT` (default `5000`), so it is reachable from other machines on the local network as well as the host. Open **`http://127.0.0.1:5000`** in your browser.
 
 ### Run with Docker 🐳 (recommended)
 
@@ -214,7 +226,10 @@ docker run -p 5000:8000 --env-file .env -v "$PWD/images:/app/images" reuniteai
 | `DB_NAME` | `reuniteai_db` | MongoDB database name |
 | `ADMIN_EMAIL` | `admin@example.com` | Auto-created admin login |
 | `ADMIN_PASSWORD` | `change_this_password` | Auto-created admin password |
+| `PORT` | `5000` | HTTP port for the dev server (`8000` inside the container) |
 | `FLASK_DEBUG` | `False` | Enable Flask debug mode (`True`/`1`) |
+
+> **Inside Docker Compose** `MONGO_URI` is automatically overridden to `mongodb://db:27017/` (the `db` service), so a shared `.env` keeps working for local runs too.
 
 ---
 
@@ -235,6 +250,7 @@ docker run -p 5000:8000 --env-file .env -v "$PWD/images:/app/images" reuniteai
 | `GET` | `/contact` | - | Contact page |
 | `GET` | `/logout` | Session | Clear session & logout |
 | `GET` | `/images/<path>` | - | Serve stored images |
+| `GET` | `/health` | - | Liveness probe (Docker `HEALTHCHECK`) |
 
 ---
 
@@ -280,10 +296,24 @@ docker pull ghcr.io/pawansimha/reuniteai-missingpersonidentifier:latest
 
 | Problem | Diagnosis & Fix |
 | :--- | :--- |
-| **`dlib` install fails** | Ensure CMake and a C++ compiler are installed. On Windows, use the pre-built `face-recognition` wheel. |
-| **MongoDB `Connection refused`** | Verify MongoDB is running: `mongod --dbpath /path/to/data`. Check `MONGO_URI` in `.env`. |
+| **`dlib` install fails** | Prefer Docker — the container compiles & bundles dlib automatically. Manual installs need CMake + a C++ toolchain (Linux: `build-essential cmake libboost-dev libopenblas-dev`). |
+| **First `docker compose up --build` is slow** | Expected: dlib compiles from source (~10-15 min). Subsequent builds reuse BuildKit cache and are fast. |
+| **Container shows unhealthy** | MongoDB isn't ready — wait for `reuniteai-db` to become healthy (`docker compose ps`); the web app starts only afterwards. |
+| **Docker Desktop: no clickable port link** | Ports must be *published* (`ports: "5000:8000"`). The clickable **`5000→:8000`** link appears after the container is healthy. |
+| **MongoDB `Connection refused`** | Verify MongoDB is running: `mongod --dbpath /path/to/data`. Check `MONGO_URI` in `.env` (local) or `db` (Docker). |
 | **`No face detected`** | Uploaded image may lack a clear frontal face. Try a different photo with better lighting/focus. |
 | **CSRF token missing** | The app uses `flask-wtf` CSRF protection. Ensure cookies are enabled in your browser. |
+
+### Testing
+
+Unit tests live in `tests/test_app.py` and require a **reachable MongoDB** (they import the app, which connects at startup):
+
+```bash
+docker compose up -d db          # container MongoDB
+python -m unittest discover tests -v
+```
+
+The same suite runs automatically on every push/PR via the `ci.yml` GitHub Actions workflow.
 
 ### Contributing
 
@@ -293,7 +323,7 @@ docker pull ghcr.io/pawansimha/reuniteai-missingpersonidentifier:latest
 4. Push to the branch (`git push origin feat/my-feature`)
 5. Open a Pull Request
 
-All contributions must maintain or improve test coverage. Run `python -m unittest discover tests` before submitting.
+All contributions must maintain or improve test coverage. Pull requests automatically trigger the `ci.yml` GitHub Actions workflow (unit tests against a fresh MongoDB + compose validation). Run `python -m unittest discover tests` locally before submitting. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full conventions.
 
 ---
 
