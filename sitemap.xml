@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://reuniteai.vercel.app/</loc>
+    <loc>https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://reuniteai.vercel.app/signup</loc>
+    <loc>https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/signup</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://reuniteai.vercel.app/user/home</loc>
+    <loc>https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/user/home</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://reuniteai.vercel.app/upload</loc>
+    <loc>https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/upload</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://reuniteai.vercel.app/register_missing</loc>
+    <loc>https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/register_missing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://reuniteai.vercel.app/missing</loc>
+    <loc>https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/missing</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://reuniteai.vercel.app/profile</loc>
+    <loc>https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/profile</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://reuniteai.vercel.app/contact</loc>
+    <loc>https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://reuniteai.vercel.app/privacy</loc>
+    <loc>https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>

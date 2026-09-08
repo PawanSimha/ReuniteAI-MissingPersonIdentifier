@@ -1,5 +1,6 @@
 # robots.txt for ReuniteAI — 2026 LLM-optimized
-# Production domain: reuniteai.vercel.app
+# Production (marketing / landing) domain: GitHub Pages
+# Base: https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/
 
 # AI crawlers — fully allowed for LLM visibility
 User-agent: GPTBot
@@ -33,4 +34,4 @@ Disallow: /images/
 Disallow: /admin/
 Disallow: /static/images/bin/
 
-Sitemap: https://reuniteai.vercel.app/sitemap.xml
+Sitemap: https://pawansimha.github.io/ReuniteAI-MissingPersonIdentifier/sitemap.xml
