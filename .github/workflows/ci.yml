@@ -88,4 +88,6 @@ jobs:
         run: python -m unittest discover tests -v
 
       - name: Validate docker-compose configuration
-        run: docker compose config --quiet
+        run: |
+          cp .env.example .env
+          docker compose config --quiet
