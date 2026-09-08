@@ -8,12 +8,20 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.8+">
+  <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11">
   <img src="https://img.shields.io/badge/Flask-3.0-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask 3.0">
-  <img src="https://img.shields.io/badge/MongoDB-4.4%2B-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB 4.4+">
+  <img src="https://img.shields.io/badge/MongoDB-7-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB 7">
   <img src="https://img.shields.io/badge/face_recognition-dlib-FF6F00?style=for-the-badge&logo=openai&logoColor=white" alt="face_recognition">
+  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions">
   <img src="https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge&logo=gnu&logoColor=white" alt="GPLv3">
   <img src="https://img.shields.io/badge/Status-Production--Ready-28A745?style=for-the-badge" alt="Status">
+</p>
+
+<p align="center">
+  <a href="https://github.com/PawanSimha/ReuniteAI-MissingPersonIdentifier/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/PawanSimha/ReuniteAI-MissingPersonIdentifier/ci.yml?branch=main&label=CI%20tests&style=flat-square" alt="CI tests"></a>
+  <a href="https://github.com/PawanSimha/ReuniteAI-MissingPersonIdentifier/actions/workflows/docker.yml"><img src="https://img.shields.io/github/actions/workflow/status/PawanSimha/ReuniteAI-MissingPersonIdentifier/docker.yml?branch=main&label=Docker%20image&style=flat-square" alt="Docker build"></a>
+  <a href="https://github.com/PawanSimha/ReuniteAI-MissingPersonIdentifier/pkgs/container/reuniteai-missingpersonidentifier"><img src="https://img.shields.io/badge/GHCR-package-blueviolet?style=flat-square&logo=github" alt="GHCR package"></a>
 </p>
 
 <p align="center">
@@ -92,9 +100,15 @@ flowchart LR
 ReuniteAI/
 ├── app.py                          # Flask application entry point
 ├── requirements.txt                # Python dependencies
+├── Dockerfile                      # Multi-stage container image
+├── docker-compose.yml              # Full-stack orchestration (web + MongoDB)
+├── .dockerignore                   # Build context exclusions
 ├── .env.example                    # Environment variable template
-├── run_reuniteai.bat               # Windows one-click launcher
 ├── LICENSE                         # GPL v3
+│
+├── .github/workflows/              # GitHub Actions
+│   ├── ci.yml                      # Unit tests (Python + MongoDB)
+│   └── docker.yml                  # Build & push image to GHCR
 │
 ├── python_files/                   # Core logic modules
 │   ├── auth_manager.py             # Signup/login, admin init, bcrypt hashing
@@ -141,9 +155,9 @@ ReuniteAI/
 
 ### Prerequisites
 
-- Python **3.8+**
+- Python **3.11** (or run inside Docker - no local Python setup required)
 - MongoDB instance running on `localhost:27017` (or remote - configure via `.env`)
-- `dlib` system dependencies (CMake, C++ toolchain - bundled via `face-recognition` on Windows)
+- `dlib` system dependencies (CMake, C++ toolchain) - **only used for non-Docker runs**; the container builds & bundles dlib automatically
 
 ### Setup
 
@@ -170,6 +184,26 @@ python app.py
 ```
 
 Open **`http://127.0.0.1:5000`** in your browser.
+
+### Run with Docker 🐳 (recommended)
+
+The whole stack (Flask app + MongoDB) is containerized. First, prepare your environment file from the template and set the admin credentials:
+
+```bash
+cp .env.example .env          # then edit SECRET_KEY, ADMIN_EMAIL, ADMIN_PASSWORD
+docker compose up --build
+```
+
+Then open **`http://localhost:5000`** - or click the clickable **`5000→:8000`** port link shown for the `reuniteai-web` container in **Docker Desktop**. The `reuniteai-db` container runs MongoDB with a healthcheck, and the web container only starts once the database is healthy.
+
+> Note: `MONGO_URI` inside the container is overridden to `mongodb://db:27017/` by the compose file, so your `.env` keeps working for local runs.
+
+Or run the app container standalone (MongoDB must be reachable):
+
+```bash
+docker build -t reuniteai .
+docker run -p 5000:8000 --env-file .env -v "$PWD/images:/app/images" reuniteai
+```
 
 ### Environment Variables (`.env`)
 
@@ -210,6 +244,33 @@ Open **`http://127.0.0.1:5000`** in your browser.
 - [ ] **Geo-Tagging & Maps** - Leaflet/Mapbox integration to visualize missing locations
 - [ ] **SMS / Email Alerts** - Automated notification to guardians upon match detection
 - [ ] **Public REST API** - Token-gated endpoints for third-party agency integration
+
+---
+
+## Docker & CI/CD
+
+### Containerization
+
+| Artifact | Purpose |
+| :--- | :--- |
+| `Dockerfile` | Multi-stage build: compiles `dlib` once in a builder stage, then copies only runtime deps into a slim, non-root (`appuser`) image. Runs `gunicorn` bound to `0.0.0.0:8000` with a `/health` liveness probe. |
+| `docker-compose.yml` | Orchestrates `web` + `db` (`mongo:7`) with healthchecks, a named volume for MongoDB data, and `./images` bind-mounted for uploads to survive restarts. |
+| `.dockerignore` | Excludes `.git`, `venv`, secrets, and gitignored data from the build context. |
+
+### Continuous Integration (GitHub Actions)
+
+- **`ci.yml`** - On every push/PR to `main`: provisions a MongoDB service container, installs dependencies (dlib compilation cached via pip), runs the `unittest` suite, and validates the compose file.
+- **`docker.yml`** - On push to `main` or version tags: builds the image with BuildKit cache, pushes it to the **GitHub Container Registry** (`ghcr.io/pawansimha/reuniteai-missingpersonidentifier`, tags: `latest`, `sha-<short>`, semver), then runs a **Trivy** vulnerability scan with results uploaded to GitHub Advanced Security.
+
+Pull the prebuilt image:
+
+```bash
+docker pull ghcr.io/pawansimha/reuniteai-missingpersonidentifier:latest
+```
+
+### Liveness endpoint
+
+`GET /health` returns `{"status":"ok","database":"ok"}` (HTTP 200) once the app and MongoDB are healthy, and HTTP 503 otherwise. It backs the Docker `HEALTHCHECK` and is ideal for orchestrators and load balancers.
 
 ---
 
