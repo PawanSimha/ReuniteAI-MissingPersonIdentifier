@@ -14,233 +14,523 @@
     <title>Login - ReuniteAI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Newsreader:ital,opsz,wght@1,6..72,400..600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png" sizes="32x32">
     <style>
-    .login-page { overflow: hidden; }
-    .login-container {
-        position: relative;
-        width: 100%;
-        max-width: 48rem;
-        min-height: 30rem;
-        margin: 5vh auto;
-        background: var(--white);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-lg);
-        overflow: hidden;
-    }
-    .form-container {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 50%;
-        padding: var(--space-8);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        transition: all 0.6s ease-in-out;
-    }
-    .form-container form {
-        width: 100%;
-        max-width: 22rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: var(--space-3);
-    }
-    .form-container input {
-        width: 100%;
-        padding: var(--space-3);
-        font-family: var(--font);
-        font-size: var(--text-sm);
-        border: 1px solid var(--n-200);
-        border-radius: var(--radius);
-        background: var(--n-50);
-    }
-    .form-container input:focus {
-        outline: none;
-        border-color: var(--blue);
-    }
-    .form-container button {
-        padding: var(--space-3) var(--space-6);
-        background: var(--grad);
-        color: var(--white);
-        border: none;
-        border-radius: var(--radius-full);
-        font-weight: 700;
-        cursor: pointer;
-        width: 100%;
-        min-height: 2.75rem;
-        font-family: var(--font);
-        font-size: var(--text-sm);
-        transition: all var(--transition);
-    }
-    .form-container button:hover { transform: scale(1.02); box-shadow: var(--shadow-md); }
-    .sign-in-container { left: 0; z-index: 2; }
-    .sign-up-container { left: 0; opacity: 0; z-index: 1; }
-    .overlay-container {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 50%;
-        height: 100%;
-        overflow: hidden;
-        transition: transform 0.6s ease-in-out;
-        z-index: 100;
-    }
-    .overlay {
-        position: relative;
-        height: 100%;
-        width: 200%;
-        left: -100%;
-        background: var(--grad);
-        color: var(--white);
-        transition: transform 0.6s ease-in-out;
-    }
-    .overlay-panel {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: var(--space-8);
-        text-align: center;
-    }
-    .overlay-left { left: 0; }
-    .overlay-right { right: 0; }
-    .overlay-panel h1 { color: var(--white); font-size: var(--text-2xl); margin-bottom: var(--space-4); }
-    .overlay-panel p { color: rgba(255,255,255,0.85); margin-bottom: var(--space-6); }
-    .ghost {
-        padding: var(--space-3) var(--space-6);
-        background: transparent;
-        color: var(--white);
-        border: 2px solid var(--white);
-        border-radius: var(--radius-full);
-        font-weight: 700;
-        cursor: pointer;
-        font-family: var(--font);
-        font-size: var(--text-sm);
-        transition: all var(--transition);
-    }
-    .ghost:hover { background: rgba(255,255,255,0.15); transform: scale(1.05); }
-    .login-container.right-panel-active .sign-in-container { transform: translateX(100%); }
-    .login-container.right-panel-active .sign-up-container { transform: translateX(100%); opacity: 1; z-index: 5; }
-    .login-container.right-panel-active .overlay-container { transform: translateX(-100%); }
-    .login-container.right-panel-active .overlay { transform: translateX(50%); }
-    .social-container { display: flex; gap: var(--space-2); margin: var(--space-2) 0; }
-    .social { width: 2.5rem; height: 2.5rem; border: 1px solid var(--n-200); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--n-600); transition: all var(--transition); }
-    .social:hover { border-color: var(--blue); color: var(--blue); }
-    .name-row { display: flex; gap: var(--space-2); width: 100%; }
-    .name-row input { width: 50%; }
-    .mobile-toggle { display: none; }
-    .login-logo { width: 3.75rem; margin-bottom: var(--space-3); }
-    .forgot-password { font-size: var(--text-xs); color: var(--n-600); text-decoration: none; margin: var(--space-2) 0; }
-    .forgot-password:hover { color: var(--blue); }
-    @media (max-width: 40rem) {
-        .overlay-container { display: none; }
-        .form-container { width: 100%; position: relative; }
-        .sign-in-container, .sign-up-container { position: relative; left: auto; opacity: 1; z-index: auto; }
-        .login-container { max-width: 100%; margin: 0; min-height: auto; border-radius: 0; }
-        .sign-up-container { display: none; }
-        .login-container.right-panel-active .sign-in-container { display: none; }
-        .login-container.right-panel-active .sign-up-container { display: flex; }
-        .mobile-toggle { display: block; font-size: var(--text-sm); }
-    }
+        :root {
+            --paper: #fbfbfd;
+            --ink: #141a2e;
+            --line: #e6e7f0;
+            --accent: var(--blue, #6366f1);
+            --accent-deep: var(--indigo, #4f46e5);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+            color: var(--ink);
+            background:
+                url("{{ url_for('static', filename='images/login wallpaper.jpg') }}") center / cover no-repeat fixed #eef0f6;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* ---------- Auth Card ---------- */
+        .auth-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 960px;
+            min-height: 600px;
+            display: grid;
+            grid-template-columns: 1.02fr 1fr;
+            border-radius: 24px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow:
+                0 24px 60px rgba(30, 27, 75, 0.16),
+                0 6px 18px rgba(30, 27, 75, 0.08);
+            animation: auth-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes auth-in {
+            from { opacity: 0; transform: translateY(18px) scale(0.985); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        /* ---------- Left: Brand Visual ---------- */
+        .auth-visual {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 3rem 2.75rem 2.25rem;
+            color: rgba(255, 255, 255, 0.92);
+            overflow: hidden;
+            isolation: isolate;
+            background:
+                linear-gradient(160deg, rgba(30, 27, 75, 0.96) 0%, rgba(49, 46, 129, 0.92) 46%, rgba(67, 56, 202, 0.88) 100%);
+        }
+        .auth-visual::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            background: {{ url_for('static', filename='images/login wallpaper.jpg') }} center / cover no-repeat;
+            filter: saturate(0.55) brightness(0.8);
+        }
+        .auth-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(600px 340px at 15% 8%, rgba(99, 102, 241, 0.35), transparent 60%),
+                linear-gradient(200deg, rgba(30, 27, 75, 0.55), rgba(49, 46, 129, 0.92));
+            mix-blend-mode: normal;
+        }
+
+        .auth-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2.75rem;
+        }
+        .auth-brand img {
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: 50%;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+        .auth-brand span {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+        }
+
+        .auth-visual h1 {
+            margin: 0 0 1rem;
+            font-size: clamp(1.75rem, 2.2vw + 0.6rem, 2.4rem);
+            line-height: 1.12;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            max-width: 22ch;
+        }
+        .auth-visual h1 em {
+            font-family: 'Newsreader', Georgia, serif;
+            font-weight: 500;
+            color: #c7d2fe;
+        }
+        .auth-visual .auth-lede {
+            margin: 0 0 2rem;
+            max-width: 34ch;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: rgba(224, 231, 255, 0.82);
+        }
+
+        .auth-points {
+            list-style: none;
+            margin: auto 0 0;
+            padding: 0;
+            display: grid;
+            gap: 0.9rem;
+        }
+        .auth-points li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: rgba(233, 238, 255, 0.88);
+        }
+        .auth-points .material-icons {
+            font-size: 1.15rem;
+            width: 2rem;
+            height: 2rem;
+            flex: 0 0 2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #ffffff;
+        }
+
+        .auth-visual .auth-legal {
+            margin-top: 1.75rem;
+            padding-top: 1.1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: rgba(199, 210, 254, 0.65);
+        }
+
+        /* ---------- Right: Forms ---------- */
+        .auth-main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2.75rem 3rem;
+        }
+
+        .auth-brand-mobile {
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+        .auth-brand-mobile img { width: 2.1rem; height: 2.1rem; }
+        .auth-brand-mobile span { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+
+        .auth-heading h2 {
+            margin: 0 0 0.4rem;
+            font-size: 1.55rem;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+        .auth-heading p {
+            margin: 0 0 1.5rem;
+            font-size: 0.9rem;
+            color: #7a8099;
+        }
+
+        .auth-alerts { margin-bottom: 1.25rem; }
+        .auth-alerts .alert { width: 100%; }
+
+        .auth-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            padding: 4px;
+            margin: 0 0 1.75rem;
+            border-radius: 12px;
+            background: #f1f1f6;
+        }
+        .auth-tab {
+            appearance: none;
+            border: 0;
+            padding: 0.65rem 1rem;
+            border-radius: 9px;
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6b7089;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .auth-tab:hover { color: var(--ink); }
+        .auth-tab.is-active {
+            background: #ffffff;
+            color: var(--accent-deep);
+            box-shadow: 0 2px 8px rgba(30, 27, 75, 0.10);
+        }
+
+        .auth-panel { display: none; }
+        .auth-panel.is-active { display: block; animation: panel-in 0.35s ease both; }
+        @keyframes panel-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+        .field { margin-bottom: 1.05rem; }
+        .field label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.45rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #3c4157;
+        }
+        .field label .material-icons {
+            font-size: 1rem;
+            color: var(--accent);
+        }
+
+        .field input {
+            width: 100%;
+            padding: 0.78rem 1rem;
+            font: inherit;
+            font-size: 0.92rem;
+            color: var(--ink);
+            background: #fbfbfd;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+        .field input::placeholder { color: #a6abc2; }
+        .field input:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.14);
+        }
+
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+        .pwd-wrap { position: relative; }
+        .pwd-wrap input { padding-right: 3rem; }
+        .pwd-toggle {
+            position: absolute;
+            top: 50%;
+            right: 0.55rem;
+            transform: translateY(-50%);
+            width: 2rem;
+            height: 2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 8px;
+            background: transparent;
+            color: #8a90a8;
+            cursor: pointer;
+        }
+        .pwd-toggle:hover { color: var(--accent); background: rgba(99, 102, 241, 0.08); }
+        .pwd-toggle .material-icons { font-size: 1.25rem; }
+
+        .field-sub {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin: 0.15rem 0 1.25rem;
+            font-size: 0.82rem;
+            color: #8a90a8;
+        }
+        .field-sub a {
+            color: var(--accent);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .field-sub a:hover { text-decoration: underline; }
+        .remember { display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer; }
+        .remember input { accent-color: var(--accent); cursor: pointer; }
+
+        .btn-auth {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #818cf8, #4f46e5);
+            color: #ffffff;
+            font: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        }
+        .btn-auth:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.05);
+            box-shadow: 0 10px 24px rgba(79, 70, 229, 0.35);
+        }
+        .btn-auth:active { transform: translateY(0); }
+
+        .auth-note {
+            margin: 1.4rem 0 0;
+            text-align: center;
+            font-size: 0.82rem;
+            color: #8a90a8;
+            line-height: 1.7;
+        }
+        .auth-note a { color: var(--accent); font-weight: 600; text-decoration: none; }
+        .auth-note a:hover { text-decoration: underline; }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 780px) {
+            body { padding: 0; align-items: flex-start; }
+            .auth-card {
+                grid-template-columns: 1fr;
+                min-height: 100vh;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .auth-visual {
+                padding: 1.75rem 1.5rem 1.5rem;
+                min-height: auto;
+            }
+            .auth-visual h1 { font-size: 1.5rem; margin-bottom: 0.6rem; }
+            .auth-visual .auth-lede { font-size: 0.88rem; margin-bottom: 0.5rem; }
+            .auth-points, .auth-visual .auth-legal { display: none; }
+            .auth-brand { margin-bottom: 0.5rem; }
+            .auth-brand span { display: none; }
+            .auth-main { padding: 2rem 1.5rem 3rem; }
+            .auth-brand-mobile { display: inline-flex; }
+        }
+
+        @media (max-width: 420px) {
+            .field-row { grid-template-columns: 1fr; }
+            .auth-heading h2 { font-size: 1.35rem; }
+            .auth-main { padding: 1.75rem 1.25rem 3rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .auth-card { animation: none; }
+            .auth-panel.is-active { animation: none; }
+        }
     </style>
 </head>
-<body class="login-page">
-    <img src="/static/images/login wallpaper.jpg" alt="Background" class="login-bg-image" style="position: fixed; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
-    <div class="login-container" id="container">
-        <div class="form-container sign-up-container">
-            <form action="/signup" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <h1>Sign Up</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google"></i></a>
-                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social"><i class="fa-brands fa-x-twitter"></i></a>
-                </div>
-                <span style="font-size: var(--text-xs); color: var(--n-400);">or use your email for registration</span>
-                <div class="name-row">
-                    <input type="text" name="first_name" placeholder="First Name" required />
-                    <input type="text" name="last_name" placeholder="Last Name" required />
-                </div>
-                <input type="text" name="username" placeholder="Username" required />
-                <input type="email" name="email" placeholder="Email" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <button type="submit">Sign Up</button>
-                <div class="mobile-toggle">Already have an account? <a href="#" id="mobileSignIn">Sign In</a></div>
-            </form>
-        </div>
+<body>
+    <div class="auth-card" id="authCard">
+        <!-- Left: Brand panel -->
+        <aside class="auth-visual" aria-hidden="true">
+            <div class="auth-brand">
+                <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="ReuniteAI logo">
+                <span>ReuniteAI</span>
+            </div>
+            <h1>Every missing person has a <em>name, a family, a story.</em></h1>
+            <p class="auth-lede">Upload a photo and our ethical AI instantly cross-checks it against reported missing-person cases across the platform.</p>
+            <ul class="auth-points">
+                <li><i class="material-icons" aria-hidden="true">verified_user</i> Biometric matching with strict privacy</li>
+                <li><i class="material-icons" aria-hidden="true">shield</i> Encrypted at rest, never sold</li>
+                <li><i class="material-icons" aria-hidden="true">volunteer_activism</i> Free for families &amp; NGOs</li>
+            </ul>
+            <p class="auth-legal">Built for social good &middot; SNPSU Research</p>
+        </aside>
 
-        <div class="form-container sign-in-container">
-            <form action="/login" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="ReuniteAI Logo" class="login-logo">
-                <h1>ReuniteAI</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google"></i></a>
-                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social"><i class="fa-brands fa-x-twitter"></i></a>
-                </div>
-                <span style="font-size: var(--text-xs); color: var(--n-400);">or use your account</span>
+        <!-- Right: Auth forms -->
+        <main class="auth-main">
+            <div class="auth-brand-mobile">
+                <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="ReuniteAI logo">
+                <span>ReuniteAI</span>
+            </div>
+
+            <div class="auth-alerts">
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                 {% for category, message in messages %}
-                <div class="alert alert-{{ category }}" style="width: 100%;">{{ message }}</div>
+                <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-                <input type="email" name="email" placeholder="Email" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <a href="#" class="forgot-password">Forgot your password?</a>
-                <button type="submit">Sign In</button>
-                <div class="mobile-toggle">New Here? <a href="#" id="mobileSignUp">Sign Up</a></div>
-            </form>
-        </div>
-
-        <div class="overlay-container">
-            <div class="overlay">
-                <div class="overlay-panel overlay-left">
-                    <h1>Welcome Back!</h1>
-                    <p>Log in with your existing account info</p>
-                    <button class="ghost" id="signIn">Sign In</button>
-                </div>
-                <div class="overlay-panel overlay-right">
-                    <h1>New Here?</h1>
-                    <p>Join the ReuniteAI community today</p>
-                    <button class="ghost" id="signUp">Sign Up</button>
-                </div>
             </div>
-        </div>
+
+            <div class="auth-heading">
+                <h2 id="authTitle">Welcome back</h2>
+                <p id="authSub">Sign in to continue to ReuniteAI.</p>
+            </div>
+
+            <div class="auth-tabs" role="tablist" aria-label="Authentication mode">
+                <button type="button" class="auth-tab is-active" role="tab" aria-selected="true" data-target="signin">Sign In</button>
+                <button type="button" class="auth-tab" role="tab" aria-selected="false" data-target="signup">Create Account</button>
+            </div>
+
+            <!-- SIGN IN -->
+            <section class="auth-panel is-active" id="panel-signin" role="tabpanel">
+                <form id="loginForm" action="/login" method="POST" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="field">
+                        <label for="loginEmail"><i class="material-icons" aria-hidden="true">alternate_email</i> Email</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="you@example.com" autocapitalize="off" autocorrect="off" required>
+                    </div>
+                    <div class="field">
+                        <label for="loginPassword"><i class="material-icons" aria-hidden="true">lock</i> Password</label>
+                        <div class="pwd-wrap">
+                            <input type="password" id="loginPassword" name="password" placeholder="Your password" required>
+                            <button type="button" class="pwd-toggle" aria-label="Show password" aria-pressed="false">
+                                <i class="material-icons" aria-hidden="true">visibility</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="field-sub">
+                        <label class="remember">
+                            <input type="checkbox" name="remember"> Remember me
+                        </label>
+                        <a href="/contact">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn-auth">Sign In</button>
+                </form>
+            </section>
+
+            <!-- SIGN UP -->
+            <section class="auth-panel" id="panel-signup" role="tabpanel">
+                <form id="signupForm" action="/signup" method="POST" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="signupFirst"><i class="material-icons" aria-hidden="true">person</i> First Name</label>
+                            <input type="text" id="signupFirst" name="first_name" placeholder="First name" autocomplete="given-name" required>
+                        </div>
+                        <div class="field">
+                            <label for="signupLast"><i class="material-icons" aria-hidden="true">person</i> Last Name</label>
+                            <input type="text" id="signupLast" name="last_name" placeholder="Last name" autocomplete="family-name" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="signupUser"><i class="material-icons" aria-hidden="true">badge</i> Username</label>
+                        <input type="text" id="signupUser" name="username" placeholder="Choose a username" autocomplete="username" required>
+                    </div>
+                    <div class="field">
+                        <label for="signupEmail"><i class="material-icons" aria-hidden="true">alternate_email</i> Email</label>
+                        <input type="email" id="signupEmail" name="email" placeholder="you@example.com" autocomplete="email" autocapitalize="off" autocorrect="off" required>
+                    </div>
+                    <div class="field">
+                        <label for="signupPassword"><i class="material-icons" aria-hidden="true">lock</i> Password</label>
+                        <div class="pwd-wrap">
+                            <input type="password" id="signupPassword" name="password" placeholder="Create a password" autocomplete="new-password" required>
+                            <button type="button" class="pwd-toggle" aria-label="Show password" aria-pressed="false">
+                                <i class="material-icons" aria-hidden="true">visibility</i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-auth">Create Account</button>
+                </form>
+                <p class="auth-note">Already have an account? <a href="#" id="switchToSignIn">Sign in</a></p>
+            </section>
+        </main>
     </div>
 
     <script>
-    var signUpButton = document.getElementById('signUp');
-    var signInButton = document.getElementById('signIn');
-    var container = document.getElementById('container');
-    var mobileSignUp = document.getElementById('mobileSignUp');
-    var mobileSignIn = document.getElementById('mobileSignIn');
+    (function () {
+        var tabs = Array.prototype.slice.call(document.querySelectorAll('.auth-tab'));
+        var panels = Array.prototype.slice.call(document.querySelectorAll('.auth-panel'));
+        var title = document.getElementById('authTitle');
+        var sub = document.getElementById('authSub');
 
-    signUpButton.addEventListener('click', function() { container.classList.add("right-panel-active"); });
-    signInButton.addEventListener('click', function() { container.classList.remove("right-panel-active"); });
+        var copy = {
+            signin: ['Welcome back', 'Sign in to continue to ReuniteAI.'],
+            signup: ['Create your account', 'Join the mission to reunite families.']
+        };
 
-    if (mobileSignUp) {
-        mobileSignUp.addEventListener('click', function(e) { e.preventDefault(); container.classList.add("right-panel-active"); });
-    }
-    if (mobileSignIn) {
-        mobileSignIn.addEventListener('click', function(e) { e.preventDefault(); container.classList.remove("right-panel-active"); });
-    }
+        function show(panelName, focusTarget) {
+            tabs.forEach(function (t) { t.classList.toggle('is-active', t.dataset.target === panelName); });
+            panels.forEach(function (p) { p.classList.toggle('is-active', p.id === 'panel-' + panelName); });
+            if (title && copy[panelName]) { title.textContent = copy[panelName][0]; sub.textContent = copy[panelName][1]; }
+            if (focusTarget) { var el = document.getElementById(focusTarget); if (el) el.focus(); }
+        }
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () { show(tab.dataset.target); });
+        });
+
+        var switchSignIn = document.getElementById('switchToSignIn');
+        if (switchSignIn) {
+            switchSignIn.addEventListener('click', function (e) {
+                e.preventDefault();
+                show('signin', 'loginEmail');
+            });
+        }
+
+        // Password visibility toggles
+        Array.prototype.slice.call(document.querySelectorAll('.pwd-toggle')).forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var input = btn.closest('.pwd-wrap').querySelector('input');
+                var show = input.type === 'password';
+                input.type = show ? 'text' : 'password';
+                input.focus();
+                btn.querySelector('.material-icons').textContent = show ? 'visibility_off' : 'visibility';
+                btn.setAttribute('aria-pressed', show ? 'true' : 'false');
+            });
+        });
+    })();
     </script>
 </body>
 </html>
