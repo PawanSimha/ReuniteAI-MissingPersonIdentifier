@@ -1,3 +1,10 @@
+# Docker Image — Container build, publish & security scan
+# ============================================================
+# On push to main (or any v* tag, or manual dispatch):
+#   1. Builds the image with BuildKit caching.
+#   2. Pushes to GitHub Container Registry (tags: latest, sha-<short>, semver).
+#   3. Runs a Trivy vulnerability scan (table output + SARIF) and uploads
+#      results to GitHub Advanced Security (Security → Code scanning).
 name: Docker Image
 
 on:

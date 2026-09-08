@@ -1,4 +1,9 @@
 # Simple workflow for deploying static content to GitHub Pages
+# ============================================================
+# NOTE: This serves ONLY the marketing/landing content in this repository
+# (index.html + static assets). The ReuniteAI *web application* itself is not
+# hosted on Pages — it runs containerized (see Dockerfile / docker-compose.yml)
+# or locally. This Pages site is what sitemap.xml and robots.txt describe.
 name: Deploy static content to Pages
 
 on:

@@ -1,3 +1,12 @@
+# CI — Continuous Integration
+# ============================================================
+# Runs on every push/PR to main (and manually via workflow_dispatch):
+#   1. Provisions a fresh MongoDB 7 service container.
+#   2. Installs Python 3.11 deps (dlib compiled from source with
+#      --no-build-isolation + apt CMake to avoid pip cmake policy failures).
+#   3. Runs the unittest suite.
+#   4. Validates docker-compose.yml.
+# No secrets required — all config is supplied via workflow env.
 name: CI
 
 on:
