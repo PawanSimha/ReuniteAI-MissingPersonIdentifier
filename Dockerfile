@@ -22,9 +22,12 @@ RUN apt-get update \
 
 WORKDIR /build
 
-# Install Python dependencies (dlib compiles here; layers cache it)
+# Install Python dependencies. --no-build-isolation forces builds to use the
+# apt-provided CMake (3.25) instead of a pip-fetched bleeding-edge one that
+# rejects dlib's bundled pybind11 (known CMake policy incompatibility).
 COPY requirements.txt .
-RUN pip install --no-cache-dir --prefix=/opt/venv -r requirements.txt
+RUN pip install --no-cache-dir --prefix=/opt/venv --no-build-isolation \
+      --retries 10 --timeout 120 -r requirements.txt
 
 # ============================================================
 # Stage 2: Runtime — minimal image with compiled deps only
