@@ -26,7 +26,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from python_files.auth_manager import signup_user, login_user, get_all_users, initialize_admin_account
-from python_files.db_manager import get_all_missing_persons, insert_new_person
+from python_files.db_manager import get_all_missing_persons, insert_new_person, client
 from python_files.main import run_matching_pipeline
 from python_files.face_encoder import extract_face_encoding
 from python_files.image_loader import load_image
@@ -297,6 +297,21 @@ def contact():
     return render_template("contact.html")
 
 
+# ---------------- HEALTH CHECK ----------------
+@app.route("/health")
+def health():
+    """Liveness probe for Docker HEALTHCHECK and orchestration."""
+    try:
+        client.admin.command("ping")
+        db_status = "ok"
+    except Exception as e:
+        db_status = "error: {}".format(e)
+    return {
+        "status": "ok" if db_status == "ok" else "degraded",
+        "database": db_status
+    }, 200 if db_status == "ok" else 503
+
+
 # ---------------- LOGOUT ----------------
 @app.route("/privacy")
 def privacy():
@@ -331,6 +346,7 @@ def page_not_found(e):
 # ---------------- START SERVER ----------------
 if __name__ == "__main__":
     debug_mode = os.getenv("FLASK_DEBUG", "False").lower() in ("true", "1", "t")
-    app.run(debug=debug_mode)
+    port = int(os.getenv("PORT", "5000"))
+    app.run(host="0.0.0.0", port=port, debug=debug_mode)
 
 # ---------------- 404 ERROR ----------------
