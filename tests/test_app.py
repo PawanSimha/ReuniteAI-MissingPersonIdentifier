@@ -26,10 +26,10 @@ class ReuniteAITests(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         
     def test_signup_route_get(self):
-        # Should now render login.html as per our fix
+        # The auth form is a single page; signup tab renders on /signup
         response = self.app.get('/signup', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Sign Up', response.data)
+        self.assertIn(b'Create Account', response.data)
 
 if __name__ == "__main__":
     unittest.main()
