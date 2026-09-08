@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Unit tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      SECRET_KEY: ci-secret-key
+      MONGO_URI: mongodb://127.0.0.1:27017/
+      DB_NAME: reuniteai_db
+      ADMIN_EMAIL: ci@example.com
+      ADMIN_PASSWORD: ci-admin-pass
+      FLASK_DEBUG: "False"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dlib build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake libboost-dev libboost-python-dev libopenblas-dev libjpeg-dev zlib1g-dev libpng-dev
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Wait for MongoDB
+        run: |
+          for i in $(seq 1 30); do
+            if python -c "from pymongo import MongoClient; MongoClient('mongodb://127.0.0.1:27017/', serverSelectionTimeoutMS=1000).admin.command('ping')"; then
+              echo "MongoDB is ready";
+              exit 0;
+            fi
+            sleep 2;
+          done
+          echo "MongoDB did not become ready in time" && exit 1
+
+      - name: Run unit tests
+        run: python -m unittest discover tests -v
+
+      - name: Validate docker-compose configuration
+        run: docker compose config --quiet
